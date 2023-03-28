@@ -1,0 +1,19 @@
+{
+    "latex-workshop.latex.tools": [
+        {
+            "name": "make",
+            "command": "make",
+            "args": [],
+            "env": {}
+        },
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "make",
+            "tools": [
+                "make",
+            ]
+        }
+    ],
+    "cSpell.enabled": false,
+}

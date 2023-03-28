@@ -1,0 +1,324 @@
+\Title{Predviđanje rezultata izbora u realnom vremenu algoritmom
+višestruke linearne regresije pomoću analize sentimenta tvitova}
+\TitleEng{Real-time election results prediction using Multiple Linear
+Regression algorithm and tweet sentiment analysis}
+\Author{Petra Avramović}
+\begin{Abstract}
+U ovom radu je ispitana upotreba analize sentimenta tvitova i algoritma višestruke linearne regresije
+za razvijanje statističkog modela koji bi predviđao rezultate izbora u realnom vremenu. Za analizu
+sentimenta je korišćen VADER, alat za generalnu analizu sentimenta baziran na leksikonu. Razvijeno
+je četiri modela: dva pomoću algoritma višestruke linearne regresije u kojoj su nezavisne promenljive
+bile prosečni sentiment i ukupan broj tvitova za svakog kandidata i dva pomoću jednostavne linearne
+regresije u kojoj je jedina nezavisna promenljiva bila ukupan broj tvitova. Modeli se, takođe, razlikuju
+i po kvantitetu tvitova upotrebljenih za njihovu obuku i testiranje. Dva koriste tvitove objavljene u
+toku jednog meseca pred dan izbora, a druga dva tvitove objavljene u toku jedne nedelje pred dan
+izbora. Rezultati testiranja pokazuju da sentiment tvitova u većini slučajeva nema značajan uticaj na
+predikcije modela, ali da period u kome su objavljeni tvitovi na osnovu kojih se vršilo predviđanje
+ima. Najbolje rezultate je postigao model koji koristi samo ukupan broj tvitova objavljenih u toku
+jedne nedelje pred dan izbora, za koji Pirsonov koeficijent korelacije između pravih i predviđenih
+vrednosti iznosi 0.86, a koren srednjeg kvadratnog odstupanja (RMSE) između predviđenih i
+ostvarenih rezultata iznosi 0.07.
+\end{Abstract}
+\begin{AuthorEx}
+Petra Avramović, Sokobanja, 3. razred Srednje škole “Branislav Nušić” u Sokobanji
+
+MENTOR:\\
+Stefan Nožinić, inžinjer za razvoj softvera, Continental Automotive d.o.o.
+\end{AuthorEx}
+\begin{AbstractEng}
+This paper investigates the use of sentiment analysis of tweets and linear regression algorithm for
+election results prediction. Four distinct models were developed in order to determine whether
+sentiment of tweets is a predictive feature and also to determine the optimal time frame for tweet
+extraction preceding the election. The data set consisted of 40 million tweets concerning 6 different
+elections which were extracted during a time period of one month before the election day. Sentiment
+analysis was done using VADER (Valence Aware Dictionary for sEntiment Reasoning), a simple rule-
+based model for general sentiment analysis. VADER has proven to be especially effective in analyzing
+social media text. Two of the developed models, named model 1 and model 2, were implemented using
+multiple linear regression where the independent variables were the total number of tweets and the
+average sentiment score for each candidate. The other two model, named model 3 and model 4, were
+implemented using simple linear regression where the independent variable was the total number of
+tweets for each candidate. The dependent variables for all 4 models were the actual election results
+quantified as the share of votes each candidate had won. For models 1 and 3 all of the collected tweets
+were used, while for models 2 and 4 only the ones published in a time period of a week preceding the
+election were used. This approach yielded mixed results. The results imply that the sentiment of tweets
+doesn’t have a significant impact on the predictions, but that the time frame in which tweets were
+published in does. The best preforming model was model 4 for which correlation coefficient between
+predicted and actual results was 0.86 and RMSE (Root Mean Square Error) was 0.07 which suggests
+that the optimal time frame for election results prediction is one week before the election day.
+\end{AbstractEng}
+
+\StartDoublePaper
+\label{rac.petra}
+
+\section{Uvod}
+
+Zaključno sa drugim kvartalom 2020. godine, Tviter ima preko 186 miliona aktivnih korisnika koji
+svakodnevno dele svoje mišljenje o raznim događajima pomoću kratkih poruka koje se zovu tvitovi
+(Statista 2020). Tvitovi mogu da sadrže najviše 280 karaktera, pa zato predstavljaju izuzetan medij za
+koncizno izražavanje stavova o nekoj temi. Analiza sentimenta tvitova može dati značajan uvid u
+mišljenje javnosti. Sve ovo čini Tviter vrlo pogodnim za predviđanje ishoda izbora (Kursuncu et al.
+2019).
+
+\AuthorExHere
+
+Cilj ovog rada je kreiranje statističkog modela koji bi omogućio predviđanje rezultata izbora u realnom
+vremenu, što podrazumeva da je predikcije moguće vršiti brzo i efikasno. U referentnom radu
+(Ramteke et al. 2016) za analizu sentimenta korišćeni su algoritmi nadgledanog mašinskog učenja:
+polinomni naivni Bajesov klasifikator (Multinomial Naive Bayes) i metod potpornih vektora (Support
+Vector Machine), pri čemu je F1-mera za pouzdanost (Hosin i Sulaiman 2015) iznosila 0.94 i 0.97,
+respektivno. Iako daje prilično precizne rezultate, ovakav pristup zahteva treniranje modela za analizu
+sentimenta, što bi onemogućilo implementaciju u realnom vremenu. Takođe, ovako treniran model bi
+bio specifičan samo za izbore na kojima je treniran, pa bi za primenu na druge izbore morao biti
+treniran iznova. Stoga, ovaj pristup ne bi mogao da se koristi za razvijanje univerzalnog modela. Za
+takav model je bolje koristiti VADER (Valence Aware Dictionary for sEntiment Reasoning; Hutto i
+Gilbert 2014). VADER je alat za analizu sentimenta koji je baziran na leksikonu, što podrazumeva da
+se može koristiti na bilo kojem skupu podataka bez prethodnog treniranja. Takođe, VADER postiže
+vrlo precizne rezultate pri analizi tvitova ($F_1 = 0.96$; Hutto i Gilbert 2014). Još jedna prednost upotrebe
+ovog alata je to što, za razliku od modela treniranih mašinskim učenjem, VADER određuje intenzitet
+sentimenta brže i efikasnije (Hutto i Gilbert 2014). S druge strane, u jednom od referentnih radova
+(Gaurav et al. 2013) za predviđanje izbora korišćen je isključivo ukupan broj tvitova za svakog
+kandidata. Ovakav pristup je dao vrlo precizne rezultate i u najboljem slučaju koeficijent korelacije
+iznosio je 1 a koren srednjeg kvadratnog odstupanja između predviđenih i ostvarenih rezultata 0, dok
+je u najgorem slučaju koeficijent korelacije iznosi 0.4, a koren srednjeg kvadratnog odstupanja 0.19.
+U referentnom radu (Zolghadr et al. 2018) upoređene su tri metode za predviđanje rezultata izbora na
+osnovu određenih političkih i ekonomskih varijabli: regresija potpornih vektora, veštačke neuronske
+mreže i linearna regresija. Regresija potpornih vektora dala je najbolje rezultate za koju koren srednjeg
+kvadratnog odstupanja između predviđenih i ostvarenih rezultata iznosi 0.01, dok za veštačke
+neuronske mreže i linearnu regresiju ta metrika iznosi 0.013 i 0.104, respektivno.
+
+\section{Metod}
+
+\subsection{Podaci}
+
+Tvitovi su prikupljeni za šest izbora u državama engleskog govornog područja: predsedničke izbore u
+SAD 2016. i 2012. godine, federalne izbore u Kanadi 2019. i 2015. godine i parlamentarne izbori u
+Velikoj Britaniji 2019. i 2017. godine. Skup podataka se sastojao od 40,950,480 tvitova preuzetih iz
+vremenskog perioda od jednog meseca pred dan izbora (tabela 1). Prikupljanje podataka vršeno je
+pomoću Pajton biblioteke \textit{getoldtweets3}.
+
+%% TODO: tabela 1
+
+\subsection{Priprema podataka}
+
+Tvitovi su minimalno procesirani pre analize sentimenta kako nijanse u izražavanju specifične za
+kontekst društvenih mreža ne bi bile izgubljene. Stoga, priprema podataka podrazumevala je
+otklanjanje specijalnih karaktera, poput simbola @, i linkova iz tvitova, jer mogu negativno da utiču
+na analizu sentimenta (Ramteke et al. 2016).
+
+\subsection{Klasifikacija}
+
+Klasifikacija tvitova je izvršena na osnovu ključnih reči koje su određene za svakog kandidata zasebno.
+U ključne reči spadaju ime i prezime kandidata i politička partija koju taj kandidat predstavlja.
+Klasifikacija je automatizovana tako što je za svaki tvit provereno prisustvo ključnih reči. Ako je neka
+od njih prisutna u tekstu tvita, onda je taj tvit sačuvan u poseban CSV fajl specifičan za kandidata čija
+je ključna reč detektovana. Na taj način uklonjeni su svi prazni tvitovi i tvitovi u kojima se ne spominje
+nijedan kandidat, jer takvi tvitovi nisu smatrani relevantnim za izbore.
+
+\subsection{Analiza sentimenta}
+
+VADER kao ulazni parametar uzima tekst i računa rezultat za četiri kategorije: pozitivnu, negativnu,
+neutralnu komponentu teksta, kao i generalni polaritet teksta. Prve tri kategorije predstavljaju odnos
+pozitivnih, odnosno negativnih ili neutralnih leksičkih predmeta (reči, emotikona, inicijalizama) i svih
+leksičkih predmeta u određenom tekstu. Generalni polaritet teksta predstavlja normalizovanu,
+kompozitnu vrednost sentimenta teksta i umnogome zavisi od modifikatora intenziteta sentimenta.
+Modifikatori intenziteta sentimenta predstavljaju skup gramatičkih i sintaksičkih pravila koja ukazuju
+na promenu intenziteta sentimenta. U modifikatore spadaju znakovi interpunkcije, kapitalizacija reči,
+prilozi, suprotni veznik „ali“ i negacija. Takođe, VADER u obzir uzima i akronime, inicijalizme,
+emotikone i žargonske izraze koji se često javljaju u tvitovima zbog ograničenog broja karaktera.
+Brojna vrednost polariteta teksta izračunava se sumiranjem vrednosti sentimenta svake reči u tekstu
+uz primenu modifikatora intenziteta sentimenta i kreće se između –1 i 1, gde –1 predstavlja
+najnegativniju vrednost sentimenta, a 1 najpozitivniju (Hutto i Gilbert 2014). U ovom radu je, od četiri
+navedene kategorije, korišćen samo generalni polaritet teksta.
+
+\section{Model}
+
+\subsection{Promenljive}
+
+Pre modelovanja, ukupan broj tvitova svakog kandidata se normalizuje formulom:
+\begin{equation*}
+    \Bar{C}_{ik}=\frac{\sum^{k}_{d=1} C_{id}}{\sum^N_{d=1}\left(\sum^k_{d=1}C_{id}\right)}
+\end{equation*}
+gde $\Bar{C}_{ik}$ predstavlja normalizovani ukupan broj tvitova za kandidata $i$ u rasponu od $k$ dana, $C_{id}$ ukupan broj tvitova za kandidata $i$ na dan $d$, $N$ broj kandidata, a $k$ ukupan broj dana.
+
+Nakon kvantifikacije sentimenata tvitova određen je prosečni sentiment za svakog kandidata. Prosečni
+sentiment se računa po formuli:
+\begin{equation*}
+    \Bar{s}_{ik}=\frac{\sum^{C_{ik}}_{t=1} s_t}{C_{ik}}
+\end{equation*}
+gde $\Bar{s}_{ik}$ predstavlja prosečni sentiment za kandidata $i$, $s_t$ brojnu vrednost sentimenta za tvit $t$, a $C_{ik}$ ukupan broj tvitova za kandidata $i$ u rasponu od $k$ dana.
+
+\subsection{Algoritam}
+
+Kao algoritam odabrana je linearna regresija zbog efikasne i lake implementacije i zbog toga što je
+zapažena približno linearna veza između promenljivih koje su učestvovale u regresionoj analizi.
+Linearna regresija predstavlja modelovanje relacija između jedne ili više zavisnih promenljivih i jedne
+ili više nezavisnih promenljivih. Opšta jednačina linearnog modela za neku instancu $i$ glasi:
+\begin{equation*}
+    y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_1 x_{ip} + \epsilon_i \quad i = 1, \dots, n
+\end{equation*}
+
+Ovih $n$ jednačina mogu se složiti u vektorski oblik kao
+\begin{equation*}
+    Y = X\beta + \epsilon
+\end{equation*}
+gde je $Y$ vektor izmerenih vrednosti koji se naziva zavisna promenljiva, $X$ matrica n-dimenzionalnih
+kolonskih-vektora $X_j$, poznatih kao nezavisne promenljive, $\beta$ vektor koeficijenata, a $\epsilon$ vektor reziduala. Reziduali, tj. greške predviđanja predstavljaju razliku između stvarne vrednosti zavisne promenljive ($y_i$) i predviđene vrednosti zavisne promenljive ($\hat{y}_i$). Predviđanja se vrše pomoću formule:
+\begin{equation*}
+    \hat{y}_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_1 x_{ip} \quad i = 1, \dots, n
+\end{equation*}
+pa je odatle $\epsilon_i = y_i - \hat{y}_i$.
+
+Optimalni koeficijenti dobijaju se metodom najmanjih kvadrata, tako što se minimizuje suma kvadrata
+reziduala (Taboga 2017).
+\begin{equation*}
+    \beta = \argmin_{\beta_0,\dots,\beta_p} \sum^n_{i=1} \left(
+        y^{(i)} - \left(
+            \beta_0 + \sum^p_{j=1} \beta_j x^{(i)}_j
+        \right)
+    \right)^2
+\end{equation*}
+
+U ovom radu razvijeno je četiri modela. Za model 1 i model 3 korišćeni su svi prikupljeni tvitovi, a za
+model 2 i model 4 samo tvitovi objavljeni u toku jedne nedelje pred dan izbora. Takođe, u modelima
+1 i 2 primenjena je višestruka linearna regresija gde su nezavisne promenljive bile normalizovani
+ukupan broj tvitova i prosečni sentiment, dok je u modelima 3 i 4 primenjena jednostavna linearna
+regresija gde je nezavisna promenljiva bila normalizovani ukupan broj tvitova. Zavisne promenljive
+za sva četiri modela bile su stvarni rezultati izbora kvantifikovani kao udeo glasova koji je kandidat
+osvojio.
+
+Jednačina modela 1 i 2 glasi:
+\begin{equation*}
+    y_i = \beta_0 + \beta_1 \Bar{C}_{ik} + \beta_2 \Bar{s}_{ik} + \epsilon_i
+\end{equation*}
+
+Jednačina modela 3 i 4 glasi:
+\begin{equation*}
+    y_i = \beta_0 + \beta_1 \Bar{C}_{ik} + \epsilon_i
+\end{equation*}
+
+Gde $y_i$ predstavlja stvarne rezultate izbora za kandidata $i$, $\beta_1$ i $\beta_2$ koeficijente, $\beta_0$ odsečak na y-osi, $\Bar{C}_{ik}$ normalizovani ukupan broj tvitova za kandidata $i$ u rasponu od k dana, a $\Bar{s}_{ik}$ prosečni sentiment (važi da je za model 1 i 3 $k = 30$, a za model 2 i 4 $k = 7$).
+
+\subsection{Normalizacija rezultata}
+
+Nakon što model predvidi rezultate, potrebno je normalizovati ih za svaki pojedinačan izbor kako bi
+bili izraženi kao udeo glasova koji je kandidat osvojio. Rezultati su normalizovani formulom:
+\begin{equation*}
+    \Tilde{y}_i = \hat{y}_i + \frac{1 - \sum^N_{i=1}\hat{y}_i}{N}
+\end{equation*}
+gde $\Tilde{y}_i$ predstavlja normalizovane rezultate za kandidata $i$, $\hat{y}_i$ prognozirane rezultate za kandidata $i$ i $N$ broj kandidata koji učestvuje u izboru za koji se normalizuju rezultati.
+
+\section{Evaluacija}
+
+Metrike korišćene za evaluaciju modela su: koeficijent korelacije i standardna greška definisana kao
+koren sume kvadrata odstupanja između pravih i predviđenih vrednosti.
+
+\subsection{Koeficijent korelacije}
+
+Koeficijent korelacije između stvarnih i normalizovanih prognoziranih rezultata računa se po formuli:
+\begin{equation*}
+    r = \frac{
+        \sum^N_{i=1}(\Tilde{y}_i - \Tilde{y})(y_i - \Bar{y})
+    }{
+        \sqrt{\sum^N_{i=1}(\Tilde{y}_i - \Tilde{y})^2\sum^N_{i=1}(y_i - \Bar{y})^2}
+    }
+\end{equation*}
+gde $r$ predstavlja koeficijent korelacije između stvarnih i normalizovanih prognoziranih rezultata, $\Tilde{y}_i$
+normalizovani prognozirani rezultat za kandidata $i$, $\Tilde{y}$ srednju vrednost normalizovanih prognoziranih
+rezultata, $y_i$ stvarni rezultat za kandidata $i$, $\Bar{y}$ srednju vrednost stvarnih rezultata, a $N$ broj kandidata.
+
+\subsection{Koren srednjeg kvadratnog odstupanja (RMSE)}
+
+Koren srednjeg kvadratnog odstupanja (RMSE) računa se po formuli:
+\begin{equation*}
+    RMSE = \sqrt{\frac{\sum^N_{i=1}(y_i - \Tilde{y}_i)^2}{N}}
+\end{equation*}
+gde $\Tilde{y}$ predstavlja normalizovane prognozirane rezultate za kandidata $i$, $y_i$ stvarne rezultate za
+kandidata $i$ i $N$ broj kandidata.
+
+\section{Rezultati i diskusija}
+
+Kako bi se utvrdila uspešnost modela u predviđanju, nezavisno od skupa podataka za obuku i skupa
+za testiranje, urađena je k-struka unakrsna validacija (Arlot i Celisse 2009). Skup podataka je
+particionisan na 6 disjunktnih podskupova $(k1, k2, \dots, k6)$, gde svako $k$ predstavlja uzorak tvitova koji
+su se odnosili na tačno jedan događaj izbora. Proces obuke i testiranja modela ponovljen je 6 puta.
+Svaki put, jedan podskup korišćen je za testiranje modela, a ostalih 5 za obuku. U svakoj iteraciji
+unakrsne validacije izmereni su koeficijent korelacije i koren srednjeg kvadratnog odstupanja između
+ostvarenih i predviđenih rezultata, a na kraju je određena njihova prosečna vrednost, što je prikazano
+na slikama 9 i 10.
+
+% TODO: tabela 2, slika 1, 2, 3, 4, 5, 6, 7, 8. 9. 10
+
+Dobijeni rezultati pokazuju da upotreba tvitova objavljenih tokom jedne nedelje pred dan izbora daje
+bolje rezultate nego upotreba tvitova objavljenih tokom jednog meseca pred dan izbora, što se najbolje
+vidi na primeru predsedničkih izbora 2016. u Sjedinjenim Američkim Državama (slika 10). Poređenje
+rezultata modela 1 i 2 sa rezultatima modela 3 i 4 pokazuje da sentiment tvitova nema značajan uticaj
+na krajnje rezultate osim u slučaju parlamentarnih izbora 2017. u Velikoj Britaniji, gde je jedino model
+1 tačno predvideo pobednika (slika 8). Najveći nedostatak ovih modela primećuje se na
+parlamentarnim izborima jer su previše naklonjeni kandidatima koji su zapravo osvojili vrlo mali deo
+glasova (slika 5, 6, 7, i 8). Najbolji rezultat je postigao model 4 za koji prosečni koeficijent korelacije
+između predviđenih i ostvarenih rezultata iznosi 0.86 (slika 9), a prosečni koren srednjeg kvadratnog
+odstupanja između predviđenih i ostvarenih rezultata 0.07 (slika 10).
+
+\section{Zaključak}
+
+Ovaj rad je pokazao da kombinacija ovih modela i podataka sa Tvitera ne može da vrši pouzdano
+predviđanje rezultata izbora. Uprkos tome, predloženi modeli su postigli zadovoljavajuće rezultate u
+poređenju sa modelima linearne regresije iz referentnog rada (Zolghadr et al. 2018) i mogli bi dalje
+biti poboljšani primenom karakteristika nevezanih za Tviter poput biografskih podataka o kandidatima
+i političkih i ekonomskih varijabli koje mogu imati uticaj na glasače. Takođe, u narednim radovima
+treba razviti posebne modele za predsedničke i parlamentarne izbore zbog njihove različite prirode.
+Upotreba linearne regresije je pokazala dobre rezultate za predsedničke izbore, dok bi za
+parlamentarne bolje bilo primeniti eksponencijalnu regresiju zbog velike razlike u udelu osvojenih
+glasova među kandidatima, koju je nemoguće linearno modelovati sa velikom preciznošću.
+
+\section{Literatura}
+
+\Source{%
+    Arlot S., Celisse C. 2009.
+    A survey of cross-validation procedures for model selection.
+    \textit{Statistics Surveys}, 4
+}
+\Source{%
+    Gaurav M., Kumar A., Srivastava A., Miller S. 2013.
+    Leveraging Candidate Popularity on Twitter to Predict Election Outcome. 
+    U \textit{SNAKDD '13: Proceedings of the 7th Workshop on Social Network Mining and Analysis.}
+    New York: ACM, članak 7, str. 1-8.
+}
+\Source{%
+    Hossin M., Sulaiman, M.N. 2015.
+    A review on evaluation metrics for data classification evaluations.
+    U \textit{International Journal of Data Mining \& Knowledge Management Process}, str. 1.
+}
+\Source{%
+    Hutto C. J., Gilbert E. 2014. 
+    VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text.
+    U \textit{Proceedings of the 8th International AAAI Conference on Weblogs and Social Media (ICWSM-14)} (ur. E. Adar i P. Resnick).
+    Palo Alto: AAAI Press (Association for the Advancement of Artificial Intelligence), str. 216-25.
+}
+\Source{%
+    Kursuncu U., Gaur M., Lokala U., Thirunarayan K., Sheth A., Arpinar I. 2019. Predictive Analysis
+    on Twitter: Techniques and Applications. U \textit{Emerging Research Challenges and Opportunities in
+    Computational Social Network Analysis and Mining}, str. 67-104.
+}
+\Source{%
+    Ramteke J., Shah S., Godhia D., Shaikh A. 2016. Election result prediction using Twitter sentiment
+    analysis. U \textit{2016 International Conference on Inventive Computation Technologies (ICICT)}.
+    IEEE, str. 1-5.
+}
+\Source{%
+    Statista. 2020. \textit{Number of monetizable daily active Twitter users (mDAU) worldwide.}
+    Dostupno na:\\https://www.statista.com/statistics/970920/\\monetizable-daily-active-twitter-users-worldwide/
+}
+\Source{%
+    Taboga M. 2017. \textit{Linear regression models, Lectures on probability theory and mathematical
+    statistics, Third edition}. Kindle Direct Publishing.
+}
+\Source{%
+    Zolghadr, M., Niaki S. A. A., Niaki, S. T. A. 2018. Modeling and forecasting US presidential election
+    using learning algorithms. \textit{Journal of Industrial Engineering International}.
+    Heidelberg: Springer, \textbf{14} (3): 491-500.
+}
+
+\vspace{2cm}
+
+\EndPaper
