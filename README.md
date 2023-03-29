@@ -48,8 +48,6 @@ Na primer, kompletna naslovna stranica programa izgleda ovako:
 % import-i pojedinacnih radova
 ```
 
-> **TODO**: staviti `\pagestyle` i `\clearpage` direktno u `\SectionCover`
-
 ## Pojedinacni rad
 
 Sledece komande definisu podatke o radu. Nista zapravo ne ispisuju.
@@ -81,9 +79,7 @@ Sve LaTeX komande mogu da se normalno koriste. Ali, kako bi se odrzala uniformno
     \Firuge{slika1.png}{Prikaz toga i toga}{Depiction of so and so}
     ```
 * `\FigureDouble{<putanja>}{<opis na srp>}{<opis na eng>}` - isto kao `\Figure`, ali slaze sliku preko cele strane u radovima u dva stupca.
-
-> **TODO**: napraviti ekvivalent za tabelu, ili napraviti da kao parametar prima kompletan float, a ne samo putanju.
-
-> **TODO**: trenutno oba opisa imaju engleski "Figure" ispred sebe,
+* `\Table{<definicija tablele>}{<opis na srp>}{<opis na eng>}` - isto kao `\Figure`, samo za `table` okruženje.
+* `\TableDouble{<definicija tablele>}{<opis na srp>}{<opis na eng>}` - isto kao `\FigureDouble`, samo za `table` okruženje.
 
 Umesto bilo kog bibliografskog alata, izvori se rucno navode. Komanda `\Source{<tekst>}` se stara da poravnjanje bude kako treba.

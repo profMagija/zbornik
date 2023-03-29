@@ -278,6 +278,7 @@
 \auth@float}{\endauth@float}
 
 \newcommand{\SectionCover}[5]{
+    \pagestyle{empty}
     \newgeometry{
         left=15mm, 
         right=15mm, 
@@ -326,6 +327,7 @@
         \vbox{#2}
     }
     \clearpage
+    \pagestyle{fancy} 
 }
 
 \newcommand{\Start@Common}{
