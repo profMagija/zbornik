@@ -2,7 +2,7 @@ reset
 set palette gray
 set grid ytics mytics
 
-set terminal pdf monochrome
+set terminal pdf monochrome fontscale 0.75
 
 set xr [0:13]
 set yr [122.5:128.5]

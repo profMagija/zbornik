@@ -34,10 +34,13 @@
 \RequirePackage{subcaption}
 \RequirePackage{amsmath}
 \RequirePackage{import}
+\RequirePackage{multirow}
 
 \RequirePackage[absolute,overlay]{textpos}
 
 \RequirePackage[serbian, english]{babel}
+
+\newcommand\captionmainlanguage{serbian}
 \RequirePackage[lang=english]{bicaption}
 
 % VHRULEFILL
@@ -306,7 +309,7 @@
 
          \vspace{15mm}
 
-         RUKOVODIOCI PROGRAMA:\\#4}
+         #4}
      \end{flushright}
     \end{subfigure}\hfill%
     \begin{subfigure}[t]{0.6\textwidth}
@@ -450,6 +453,22 @@
         \includegraphics[width=\linewidth]{#1}
         \bicaption{#2}{#3}
     \end{figure*}
+}
+
+\newcommand{\Table}[4]{
+    \begin{table}
+        \centering
+        #1
+        \bicaption{#2}{#3}
+    \end{table}
+}
+
+\newcommand{\TableDouble}[4]{
+    \begin{table*}
+        \centering
+        #1
+        \bicaption{#2}{#3}
+    \end{table*}
 }
 
 \DeclareBiCaptionSeparator{hrule}{\vspace{-1ex}\noindent\rule{36mm}{0.075mm}\\}

@@ -1,7 +1,7 @@
 reset
 set palette gray
 
-set terminal pdf monochrome
+set terminal pdf monochrome fontscale 0.75
 
 set xlabel 'Broj agenata'
 set ylabel 'Relativno odstupanje [%]'
