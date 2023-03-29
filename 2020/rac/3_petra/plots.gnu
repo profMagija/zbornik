@@ -22,7 +22,7 @@ plot 'plots.dat' index 0 u ($0-0.15+1):3 t 'Nedelja'   w boxes lt 1, \
 
 set xlabel 'Kandidat'
 set yrange [0:1]
-set key outside rmargin
+set key outside
 set xrange [-0.5:1.5]
 set boxwidth 0.15
 set style fill pattern 0

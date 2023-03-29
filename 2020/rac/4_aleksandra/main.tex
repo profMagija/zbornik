@@ -1,0 +1,347 @@
+\hyphenation{do-de-lje-na}
+\Title{Optimizacija rada svetlosnih signala na izolovanoj raskrsnici upotrebom heurističkih algoritama}
+\TitleEng{Optimization of Traffic Signal Light Timing Using Heuristic Algorithms}
+\Author{Aleksandra Milić}
+\begin{AuthorEx}
+Aleksandra Milić (2002), Lebane, učenica 3. razreda Gimnazije u Lebanu
+
+MENTOR:\\
+Aleksa Tešić, student Matematičkog fakulteta u Beogradu
+\end{AuthorEx}
+\begin{Abstract}
+Razvijene su metode za optimizaciju svetlosnih signala na izolovanoj raskrsnici u fiksnom režimu rada. Metode su bazirane na heurističkim algoritmima: gravitacioni pretraživački algoritam (GSA) i optimizacija rojem čestica (PSO). Navedeni algoritmi su poređeni sa referentnim algoritmom kolonije pčela (BCO) iz literature. Data je formulacija problema optimizacije, kao i opis korišćenih algoritama. Oba algoritma su implementirana u razvojnom okruženju Visual Studio Code u programskom jeziku Python. Optimizacija je izvršena na osnovu proračuna fitness funkcije koja minimizuje prosečne vremenske gubitke svih vozila u raskrsnici, pri odgovarajućim ograničenjima. Metode su testirane na hipotetičkim primerima iz literature i na primeru realne raskrsnice. Urađena je analiza konvergencije GSA i PSO algoritama. Dobijeni rezultati pokazuju da je PSO, u poređenju sa algoritmom kolonije pčela (BCO) iz literature, uspeo da nađe iste ili bolje signalne planove za skoro sve test primere. Poređenjem primenjenih metoda, pokazalo se da je GSA dao lošije rezultate od algoritma PSO i BCO. Ipak, u poslednjem test primeru GSA je uspeo da nađe bolji signalni plan od postojećeg signalnog plana raskrsnice.
+\end{Abstract}
+\begin{AbstractEng}
+Signal timing optimization is an important measure to reduce traffic congestion, exhaust gas emissions and improve traffic safety. This paper presents application of gravitational search algorithm (GSA) and particle swarm optimization (PSO) to solve the traffic signal timing optimization problem for isolated intersections. GSA is one of the recent nature inspired optimization algorithms. In GSA, each mass presents a solution. These masses (agents) obey the Newtonian's law of gravity and the law of motion, so they attract each other by the gravity force. This force causes a global movement of all objects towards the objects with heavier masses. By lapse of time, we expect that masses will be attracted by the heaviest mass, which will present an optimum solution in the search space. PSO is a population-based stochastic optimization algorithm motivated by intelligent behavior of some individuals within a group, such as flock of birds. This algorithm solves a problem by having a population (swarm) of candidate solutions or particles, and moving these particles around in the search space according to simple mathematical formulas over the particle's position and velocity. Proposed heuristic algorithms were developed to optimize the control parameters (cycle length and the distribution of green time on the phases) in two cases: undersaturated and oversaturated flows at the intersection. Intersection control is in the "fixed time" mode, where traffic flows are served by being divided into a number of phases. The fitness function of this model is used to minimize the total average control delay of all vehicles that pass an intersection at a certain period, with constraint. The method was developed in Visual Studio Code IDE, using the Python programming language. The testing has been done on three hypothetical examples with different saturation of traffic flows (Figure 2, 3 and 4). Also, the model is tested on a real intersection in Belgrade (Figure 5). An analysis of the convergence of GSA and PSO algorithms was performed. It was shown that the GSA and PSO converge to good solutions in the first few iterations. Simulation results for hypothetical examples showed that the PSO algorithm provides almost the same solution compared to the bee colony optimization algorithm (BCO) from the literature. The GSA algorithm gave worse results than PSO (table 1, 2.1, 2.2 and 3). The fitness values i.e. the total average control delays of all vehicles obtained by PSO are 189.78 s/vehicle (the first period of analysis) and 369.12 s/vehicle (the second period of analysis). The solutions obtained by PSO (table 4), give less value of fitness function compared to those that come from the BCO and GSA algorithms, for a real test intersection. Also, in the last test example, the GSA algorithm found a better signal plan than the signal plan according to the existing condition. 
+\end{AbstractEng}
+\StartDoublePaper
+
+\section{Uvod}
+
+Pod pojmom saobraćajni tok se podrazumeva istovremeno kretanje više vozila na putu u određenom poretku. U saobraćajnoj mreži, mesto konflikta između saobraćajnih tokova koji dolaze iz dva ili više različitih smerova je raskrsnica. Organizacija saobraćajnih tokova se može izvršiti postavljanjem signalnog plana raskrsnice u cilju poboljšanja uslova odvijanja saobraćaja (manje vreme putovanja, manja potrošnja goriva, manje zagađenje vazduha itd.). Određivanje upravljačkih parametara signalnog plana za izolovanu raskrsnicu predstavlja optimizacioni problem koji je predmet mnogih istraživanja. Neki od pristupa za upravljanje radom svetlosnih signala raskrsnice su zasnovani na heurističkim i optimizacionim metodama, kao što su Differential Evolution Bacteria Foraging Algorithm (Liu i Xu 2012) i Bee Colony Optimization (Jovanović 2018). Takođe, ovaj problem je rešavan hibridnim algoritmom neuronskih mreža i fazi logike (Murat 2006).
+
+\AuthorExHere
+
+Postoje dva generalna načina upravljanja saobraćajnim tokovima: upravljanje u fiksnom režimu rada i upravljanje u realnom vremenu. U ovom radu je razmatran problem optimizacije trajanja svetlosnih signala izolovane raskrsnice u fiksnom režimu rada. U slučaju fiksnog režima rada, tokovi se grupišu u određeni broj faza. Svakoj fazi se dodeljuje vremenski interval tokom kog se opslužuju vozila (zeleno svetlo na semaforu). Vreme koje protekne između dva uzastopna početka iste faze je ciklus (slika 1).
+
+% TODO: slika 1
+
+Cilj rada je razvijanje i testiranje metoda za optimizaciju upravljačkih parametara (ciklusa i raspodele zelenih vremena po fazama) koji minimiziraju ukupne prosečne vremenske gubitke vremena svih vozila koja prolaze raskrsnicom, u toku određenog perioda analize. Implementirana su dva heuristička algoritma: gravitacioni pretraživački algoritam (engl. Gravitational Search Algorithm) i optimizacija rojem čestica (engl. Particle Swarm Optimization). Izmenjena je njihova strategija pretraživanja novih rešenja, kako bi se postavila gornja i donja granica pretraživačkog prostora kome pripadaju vrednosti upravljačkih parametara. Testiranje metoda je izvršeno na numeričkim primerima, odnosno hipotetičkim raskrsnicama iz literature (Jovanović 2018) i na primeru realne raskrsnice u Beogradu. Takođe, dobijeni rezultati su poređeni sa rezultatima iz disertacije “Izbor signalnih planova za upravljanje saobraćajem primenom optimizacije kolonijom pčela” (Jovanović 2018).
+
+\section{Metod}
+
+\subsection{Formulacija problema}
+
+Određivanje optimalne vrednosti trajanja ciklusa i zelenih vremena zasniva se na minimizaciji ukupnih prosečnih vremenskih gubitaka svih vozila koja prolaze raskrsnicom u određenom periodu analize. Za potrebe matematičke formulacije ovog problema uvode se sledeće veličine (Jovanović 2018):
+
+\begin{itemize}
+    \item $F$ -- skup faza;
+    \item $K$ -- skup svih saobraćajnih traka;
+    \item $i$ -- indeks saobraćajne trake, $i = 1, 2, \dots, |K|$;
+    \item $j$ -- indeks fase, $j = 1, 2, \dots, |F|$;
+    \item $q_i$ -- saobraćajni tok u $i$-toj saobraćajnoj traci (merna jedinica: vozilo po satu, tj. voz/h);
+    \item $s_i$ -- zasićeni tok u $i$-toj saobraćajnoj traci (voz/h);
+    \item $X_i$ -- stepen zasićenja $i$-te saobraćajne trake;
+    \item $Y_j$ -- maksimalna vrednost svih odnosa $q_i$ i $s_i$ koje pripadaju $j$-toj fazi;
+    \item $c_i$ -- kapacitet $i$-te saobraćajne trake (voz/h);
+    \item $T$ -- trajanje perioda analize (h);
+    \item $b$ -- indeks perioda analize;
+    \item $Q_{bi}$ - inicijalni red vozila u $i$-toj saobraćajnoj traci na startu $b$-tog perioda analize (voz);
+    \item $C$ -- ciklus (s);
+    \item $C_{min}$ -- minimalna vrednost ciklusa (s);
+    \item $C_{max}$ -- minimalna vrednost ciklusa (s);
+    \item $L$ -- izgubljeno vreme tokom ciklusa (s);
+    \item $g_i$ -- zeleno vreme dodeljeno $i$-toj saobraćajnoj traci (s);
+    \item $g_j$ -- zeleno vreme dodeljeno $j$-toj fazi (s);
+    \item $g_{min}$ -- minimalna vrednost zelenog vremena (s);
+    \item $g_{max}$ -- maksimalna vrednost zelenog vremena (s);
+    \item $d_i$ -- prosečni vremenski gubici po vozilu u i-toj saobraćajnoj traci (merna jedinica: sekunda po vozilu, tj. s/voz);
+    \item $d_{1i}$ -- ujednačeni vremenski gubici („uniform delay”) po vozilu u $i$-toj saobraćajnoj traci (s/voz);
+    \item $d_{2i}$ -- postepeni vremenski gubici („incremental delay”) po vozilu u $i$-toj saobraćajnoj traci (s/voz);
+    \item $d_{3i}$ - vremenski gubici usled postojanja inicijalnog reda, po vozilu, u $i$-toj saobraćajnoj traci (s/voz);
+    \item $D$ -- ukupni prosečni vremenski gubici svih vozila, koja prolaze raskrsnicom, u toku trajanja određenog perioda analize (s/voz).
+\end{itemize}
+
+Optimizacioni problem je prikazan u radu (Jovanović 2018) i formulisan je na sledeći način:
+
+Minimizirati
+\begin{equation}
+    D = \frac{\sum_{i=1}^{|K|} q_i d_i}{\sum_{i=1}{|K|} q_i}
+\end{equation}
+pod ograničenjima:
+\begin{equation}
+    C_{min} \leq C_j \leq C_{max}
+\end{equation}
+(interval u kome se nalazi vrednost ciklusa)
+\begin{equation}
+    g_{min} \leq g_j \leq g_{max}, \; \forall j \in F
+\end{equation}
+(interval u kome se nalaze zelena vremena dodeljena fazama)
+\begin{equation}
+    \sum_{j=1}^{|F|} g_j = C-L
+\end{equation}
+(odnos  ciklusa, zelenih vremena faza i izgubljenog vremena tokom ciklusa)
+
+Fitness funkcija (1) vrši proračun ukupnih prosečnih vremenskih gubitaka. Vrednost prosečnih vremenskih gubitaka, utvrđuje se narednim izrazom (Manual 2000):
+\begin{equation*}
+    d_i = d_{1i} + d_{2i} + d_{3i}
+\end{equation*}
+
+U zavisnosti od stepena zasićenja X, saobraćajni tokovi mogu biti nezasićeni ($X_i \leq 1, \forall i \in K$) i prezasićeni ($X_i > 1, \exists i \in K$). Inicijalni red vozila Qb+1 , stepen zasićenja Xi, kao i prosečni vremenski gubici $d_i$, $d_{1i}$, $d_{2i}$, $d_{3i}$ su veličine koje se računaju po modelu u priručniku HCM2000 (Manual 2000).
+
+Ovaj nelinearni optimizacioni problem sa ograničenjima je rešavan primenom heurističkih algoritama, o kojima će biti reči u narednom poglavlju.
+
+\subsection{Opis korišćenih algoritama}
+
+Heurističke metode su tehnike koje generišu dobra ili približno optimalna rešenja u okviru razumnog vremena rada računara, bez mogućnosti da garantuju optimalnost ili da navedu koliko je određeno rešenje blizu optimalnog.
+
+Heuristički algoritmi su inspirisani fizičkim i biološkim procesima u prirodi. Neki od njih su gravitacioni pretraživački algoritam (GSA), inspirisan Njutnovim zakonima gravitacije i kretanja, i optimizacija rojem čestica (PSO), koja se zasniva na ponašanju pojedinačnih jedinki unutar određene grupe (npr. jato ptica).
+
+Gravitacioni pretraživački algoritam (engl. Gravitational Search Algorithm - GSA). U radu (Rashedi et al. 2009) je predstavljen GSA, relativno novi optimizacioni algoritam. Kod GSA, pretraživački agenti predstavljaju skup masa koje međusobno deluju po Njutnovom zakonu gravitacije, odnosno kreću se ka objektima većih masa. Performanse navedenih agenata se izražavaju njihovim masama, koje se određuju na osnovu vrednosti fitness funkcije. Svaki agent predstavlja jedno rešenje. Tokom vremena, očekuje se da će objekte manjih masa privući objekat najveće mase. Ta masa predstavlja optimalno rešenje u pretraživačkom prostoru.
+
+GSA možemo posmatrati kao izolovani sistem sa N agenata (masa). Pozicija i-tog agenta je u tom slučaju definisana kao:
+
+\begin{equation*}
+    X_i = (x_i^1, \dots, x_i^d, \dots, x_i^n), \mbox{ za } i = 1, 2, \dots, N
+\end{equation*}
+gde $x_i^d$ predstavlja poziciju $i$-tog agenta u $d$ dimenziji.
+
+Masa svakog agenta se dobija fitness evaluacijom na sledeći način:
+\begin{align}
+    M_i(t) &= \frac{m_i(t)}{\sum_{i=1}^{N} m_j(t)} \\
+    m_i(t) &= \frac{\mathrm{fit}_i(t) - \mathrm{worst}(t)}{\mathrm{best}(t) - \mathrm{worst}(t)} \nonumber
+\end{align}
+
+gde $\mathrm{fit}_i(t)$ označava fitness vrednost $i$-tog agenta u iteraciji t. Za problem minimizacije $\mathrm{best}(t)$  i $\mathrm{worst}(t)$ su definisani kao:
+
+\begin{align}
+    \mathrm{best}(t) & = \min \mathrm{fit}_j(t) & \\
+    \mathrm{worst}(t) & = \max \mathrm{fit}_j(t) & j = 1, \dots, N \nonumber
+\end{align}
+
+Ukupna sila koja deluje na agenta i u dimenziji d u iteraciji t se na osnovu Njutnovog zakona gravitacije određuje na sledeći način:
+
+\begin{align}
+    F_i^d(t) =  \sum_{j \in K_{b} \setminus \{i\}}
+    & \mathrm{rand}_j \cdot G(t) \cdot \nonumber \\
+    & \cdot \frac{M_j(t) M_i(t)}{R_{i,j}(t) + \epsilon} \cdot \nonumber \\
+    & \cdot \left( x_j^d(t) - x_i^d(t) \right)
+\end{align}
+gde je $\mathrm{rand}_i$ slučajan broj u intervalu $[0,1]$ koji daje stohastički karakter pretrage ovom algoritmu. $K_{b}$ je skup prvih $K$ agenata sa najvećim masama, odnosno najboljim fitness vrednostima. Kako se ovaj skup linearno smanjuje, na kraju ostaje samo jedan agent. $M_i(t)$ i $M_j(t)$ su mase agenata $i$ i $j$; $\epsilon$ je mala konstanta; $R_{i,j}(t)$ je Euklidova distanca između agenata $i$ i $j$:
+
+\begin{align*}
+    R_{i,j}(t) = ||X_i(t), X_j(t)||^2
+\end{align*}
+
+U skladu sa zakonom kretanja, ubrzanje agenta $i$ u iteraciji $t$, u dimenziji $d$ se određuje pomoću izraza:
+
+\begin{align}
+    a_i^d = \frac{F_i^d}{M_i(t)}
+\end{align}
+
+Na osnovu trenutne brzine, ubrzanja i pozicije agenta, određuju se brzine i pozicije  narednog agenta:
+
+\begin{align}
+    v_i^d(t+1) & = \mathrm{rand}_i \cdot v_i^d(t) + a_i^d(t) \\
+    x_i^d(t+1) & = x_i^d(t) + v_i^d(t+1)
+\end{align}
+gde je $\mathrm{rand}_i$ slučajan broj u intervalu $[0,1]$; $x_i^d(t)$ , $v_i^d(t)$, $a_i^d(t)$ su pozicija, brzina i ubrzanje agenta u $d$ dimenziji i $t$ iteraciji, respektivno.
+
+$G(t)$ je gravitaciona konstanta u iteraciji $t$ i dobija se sledećom formulom:
+
+\begin{equation}
+    G(t) = G_0 \cdot \exp \left(- \alpha \frac{t}{t_{max}} \right).
+\end{equation}
+Početna vrednost gravitacione konstante $G_0$ inicijalizuje se na početku algoritma. Tokom vremena, vrednost gravitacione konstante se redukuje, kako bi kontrolisala preciznost pretrage. $t_{max}$ je maksimalni broj iteracija, dok je $\alpha$ konstanta koja se takođe zadaje na početku algoritma. Navedeni parametri ($N$, $t_{max}$, $G_0$, $\alpha$) su kontrolni parametri od kojih zavise performanse algoritma.
+
+Optimizacija rojem čestica (engl. Particle Swarm Optimization - PSO). Ovaj algoritam je prvi put objavljen u radu (Kennedy et al. 1995). PSO se bazira na ponašanju pojedinačnih jedinki unutar određene grupe (npr. jata ptica). Potencijalna rešenja su položaji čestica (ptica) koje se kreću u prostoru pretraživanja. Čestice se opisuju svojim položajem u roju i u odnosu na susedne čestice, brzinom kretanja i informacijom o svom do tada najboljem položaju. Promenom položaja čestica tokom iterativnog procesa modelira se proces traženja najboljeg rešenja. 
+
+Pozicija čestice $x_i^d(t)$ i njena brzina $v_i^d(t)$ se određuju na sledeći način:
+
+\begin{align}
+    v_i^d(t+1) & = w \cdot v_i^d(t) + \nonumber \\
+    & + c_1 r_{i1} \cdot (pbest_i^d-x_i^d(t)) + \nonumber \\ 
+    & + c_2 r_{i2} \cdot (gbest_i^d-x_i^d(t))
+\end{align}
+\begin{equation}
+    x_i^d(t+1) = x_i^d(t) + v_i^d(t + 1)
+\end{equation}
+gde su $r_{i1}$ i $r_{i2}$ slučajni brojevi u intervalu $[0,1]$; $w$ je inercijalna težina koja se inicijalizuje na početku algoritma, kao i koeficijenti ubrzanja $c1$ i $c2$. Respektivno, $X_i =(x_i^1, x_i^2, \dots , x_i^n)$ i $V_i =(v_i^1, v_i^2, \dots , v_i^n)$ predstavljaju poziciju i brzinu $i$-te čestice; $pbest_i = (pbest_i^1,pbest_i^2,...,pbest_i^n)$ je najbolja pozicija (rešenje) $i$-te čestice; $gbest_i = (gbest_i^1,gbest_i^2,...,gbest_i^n)$ najbolja pozicija u roju ili populaciji.
+
+\section{Implementacija}
+
+Algoritmi su implementirani u programskom okruženju Visual Studio Code u programskom jeziku Python. Implementacija metoda koji se zasniva na gravitacionom pretraživačkom algoritmu izvršena je na sledeći način:
+
+\begin{enumerate}
+    \item Definisanje ulaznih parametara
+    \item Inicijalizacija početne populacije veličine $N$
+    \item Izračunavanje fitness vrednosti svakog agenta 
+    \item Ažuriranje vrednosti: $G(t)$ (11), $\mathrm{best}(t)$, $\mathrm{worst}(t)$ (6), $M_i(t)$ (5) za $i = 1, 2,\dots, N$
+    \item Izračunavanje ukupne sile u različitim pravcima (7)
+    \item Izračunavanje ubrzanja agenata (8)
+    \item Ažuriranje brzine (9) i pozicije agenata (10)
+    \item Modifikacija pozicije agenata 
+    \item Ponavljanje koraka 3-8 sve dok se ne postigne maksimalni broj iteracija.
+\end{enumerate}
+
+Drugi metod podrazumeva proces optimizacije rojem čestica i može se opisati u sedam koraka:
+
+\begin{enumerate}
+    \item Definisanje ulaznih parametara
+    \item Inicijalizacija početne populacije veličine N
+    \item Izračunavanje fitness vrednosti svake čestice
+    \item Postavljanje vrednosti globalne i lokalne najbolje pozicije
+    \item Ažuriranje brzine (12) i pozicije čestica (13)
+    \item Modifikacija pozicije čestica 
+    \item Ponavljanje koraka 3-6 sve dok se ne postigne maksimalni broj iteracija.
+\end{enumerate}
+
+Za oba algoritma su definisane posebne funkcije sa istim ulaznim parametrima: maksimalan broj iteracija, veličina populacije, dimenzija prostora pretraživanja i podaci o saobraćajnim tokovima na raskrsnici: broj faza ($F$), raspored saobraćajnih traka po fazama, saobraćajni tokovi po trakama ($q$), zasićene vrednosti saobraćajnih tokova ($s$), izgubljeno vreme tokom ciklusa ($L$), indeks perioda analize ($b$), inicijalni red vozila ($Q$) u saobraćajnoj traci (na početku $b$-tog perioda analize). Na osnovu navedenih ulaznih podataka izvršena je optimizacija upravljačkih parametara signalnog plana raskrsnice. Broj upravljačkih parametara u algoritmu definiše dimenziju agenta (rešenja). Za veličinu populacije N, položaj $i$-tog agenta je:
+\begin{equation*}
+    x_i = \left(C_i, g_i^1, \dots, g_i^F\right)
+\end{equation*}
+pri čemu je $C_i$ vrednost ciklusa, dok su $g_i^1,\dots,g_i^F$ vrednosti zelenih vremena. U zavisnosti od broja faza $F$, dimenzija pretraživačkog prostora je $F+1$.
+
+Za GSA su definisani algoritamski parametri: $N=50$, $t_max = 100$, $G_0 = 100$, $\alpha = 20$; dok su za PSO usvojene sledeće vrednosti: $w = 0.5$, $c_1 = 1$, $c_2 = 2$.
+
+U drugom koraku je izvršena inicijalizacija početne populacije. Najpre je generisana inicijalna vrednost ciklusa na slučajan način iz opsega $[C_{min}, C_{max}]$, gde je $C_{min} = 30$ i $C_{max} = 120$. Vrednost trajanja ciklusa raspoređeno je na faze sledećom formulom (Salter 1996: 331):
+
+\begin{align*}
+    g_j & = \frac{y_j}{Y} (C - L) \\
+    y_j & = \max_i (y_i)\mbox{, za svaki tok $i$ u fazi $j$} \\
+    y_i & = \frac{q_i}{s_i} \\
+    Y & = \sum_{j=1}^{|F|}g_j
+\end{align*}
+gde je $g_j$ vrednost zelenog vremena dodeljena $j$-toj fazi. 
+
+Generisana rešenja, odnosno agenti, predstavljaju inicijalnu populaciju. Za svakog agenta (čestice) se vrši proračun fitness vrednosti na osnovu fitness funkcije (1), radi izračunavanja i ažuriranja brzine i pozicije agenata (čestica). Nakon toga, izvršena je modifikacija pozicije, kako bi rešenje bilo u okviru definisanih ograničenja. Najpre je provereno da li se skup “novih” upravljačkih parametara nalazi u okviru donjih i gornjih ograničenja pretraživačkog prostora (C∈Cmin, Cmax,gmin=30, gmax=120, gjgmin, gmax,gmin=7, gmax=80). Ukoliko vrednost parametra prelazi donju (gornju) granicu, on uzima vrednost donjeg (gornjeg) ograničenja. Time su ispunjena ograničenja (2) i (3). Nakon toga su izvršeni sledeći proračuni:
+
+\begin{itemize}
+    \item razlika ($a$) između “stare” i “nove” vrednosti ciklusa: $a=C(t)-C(t+1)$, gde je $C(t)$ vrednost “starog”  ciklusa i $C(t+1)$ vrednost “novog” ciklusa;
+    \item razlika ($b$) između sume “starih” vrednosti zelenih vremena i sume “novih” vrednosti zelenih vremena: $b = \sum_{j=1}^{|F|} g_j(t) - \sum_{j=1}^{|F|} g_j(t+1)$, gde je $g_j(t)$ vrednost “starog”  zelenog vremena i $g_j(t+1)$ vrednost “novog” zelenog vremena u $j$-toj fazi.
+\end{itemize}
+
+Poznato je da za “stare” vrednosti upravljačkih parametara važi jednakost $\sum_{j=1}^{|F|} g_j = C - L$. S obzirom na to da “novi” skup upravljačkih parametara treba da ispunjava uslov (4), potrebno je da važi sledeće: $c = a-b= 0$, što predstavlja cilj dalje modifikacije.
+
+Ako je $a>b$, proces modifikacije rešenja se izvršava na sledeći način:
+\begin{algorithmic}
+    \For{svako zeleno vreme $g(t + 1)$}
+        \If{$7 \leq g(t+1) + c \leq 80$}
+            \State $g(t+1) \leftarrow g(t+1) + c$
+            \State $c \leftarrow 0$
+            \State \textbf{break}
+        \EndIf
+    \EndFor
+    \If{$c \not= 0$}
+        \State $C(t+1) \leftarrow C(t+1) - c$
+    \EndIf
+\end{algorithmic}
+
+Ako je $a < b$, proces modifikacije rešenja se izvršava na sledeći način:
+\begin{algorithmic}
+    \If{$30 \leq C(t + 1) \leq 120$}
+    \State $C(t+1) \leftarrow C(t+1) + c$
+    \Else
+        \For{svako zeleno vreme $g(t + 1)$}
+            \If{$7 \leq g(t+1) + 7 \leq 80$}
+                \State $c \leftarrow g(t+1) - 7$
+                \State $g(t+1) \leftarrow 7$
+            \Else
+                \State $g(t+1) \leftarrow g(t+1) - c$
+                \State $c \leftarrow 0$
+                \State \textbf{break}
+            \EndIf
+        \EndFor
+        \If{$c \not= 0$}
+            \State $C(t+1) \leftarrow C(t+1) + c$
+        \EndIf
+    \EndIf
+\end{algorithmic}
+
+Na ovaj način je izvršeno generisanje upravljačkih parametara (ciklusa i zelenih vremena), u okviru navedenih ograničenja. Na početku svake od iteracija u GSA i PSO algoritmu, trenutno najbolja poznata rešenja se dodeljuju agentima, odnosno česticama, i modifikuju se u narednim koracima, sve dok se ne postigne maksimalni broj iteracija. Takođe je razmatran slučaj kada se na početku svake od iteracija dodeljuju nova inicijalna rešenja.
+
+\section{Test primeri}
+
+Opisani metod je testiran na hipotetičkim primerima, odnosno tri test scenarija. Prvi scenario prikazuje raskrsnicu sa nezasićenim tokovima u jednom periodu analize ($T=1h$, za $b = 1$) (slika 2). Drugi i treći scenario podrazumevaju dva perioda analize ($T=1h$, za $b\in\{1,2\}$) za prezasićene tokove (slika 3 i 4). Za svaki scenario su analizirani slučajevi kada se raskrsnicom upravlja sa 2, 3, 4, 5, ili 6 faza. U zavisnosti od broja faza, izvršen je odabir izgubljenog vremena $L$. Testiranje je izvršeno i na primeru realne raskrsnice u Beogradu, Kneza Miloša - Bulevar Kralja Aleksandra - Takovska, u dva perioda analize  ($T=1h$, za $b\in\{1,2\}$). Podaci o raspodeli traka po fazama, izgubljenom vremenu tokom ciklusa ($L$), kao i o saobraćajnim tokovima po trakama ($q$) i njihovim zasićenim vrednostima ($s$) dati su u disertaciji (Jovanović 2018) za svaku test raskrsnicu. Broj faza i raspored saobraćajnih traka za prvi, drugi i treći test primer prikazan je na slici 1, dok su ovi podaci za četvrtu raskrsnicu dati na slici. Brojevi prikazuju vrednosti saobraćajnog toka (voz/h) u saobraćajnim trakama, koje su označene slovima abecede. Strelice prikazuju pravac kretanja vozila u saobraćajnim trakama (NS - pravac sever-jug; WE - pravac zapad-istok). Kao što je navedeno u prethodnom poglavlju, ovi podaci predstavljaju ulazne veličine na osnovu kojih je izvršena optimizacija.
+
+% TODO: slike 2-5
+
+\section{Rezultati i diskusija}
+
+U radu su prikazani rezultati optimizacije u kojoj se na početku svake iteracije dodeljuju trenutno najbolja poznata rešenja agentima (česticama). Takođe je implementiran i drugi način inicijalizacije rešenja: na početku svake iteracije se generišu druga rešenja i dodeljuju se agentima. U drugom navedenom slučaju, algoritmi daju lošije rezultate u poređenju sa rezultatima prikazanim u ovom poglavlju. S obzirom na to, rezultati navedenog slučaja nisu prikazani u radu. Dobijeni rezultati su poređeni sa rezultatima optimizacije kolonijom pčela (engl. Bee Colony Optimization – BCO) iz disertacije (Jovanović 2018) koji je testiran na istim numeričkim primerima.
+
+U ovom poglavlju su dati grafici konvergencije GSA i PSO algoritama za svaki test primer (slike 7.1, 7.2, 8.1, 8.2, 9.1, 9.2 i 10). Na osnovu njih se može zaključiti da oba algoritma brže konvergiraju ka rešenju.
+
+Rezultati za prvi test scenario su prikazani u tabeli 1. Dati su podaci o vrednosti fitness funkcije u zavisnosti od najboljih dobijenih rešenja: vrednosti ciklusa i zelenih vremena. Pokazano je da metode zasnovane na PSO i BCO heuristikama nalaze ista rešenja kada se raskrsnicom upravlja sa 2, 3, 4, i 6 faza, dok je za raskrsnicu sa 5 faza dobijeno rešenje blizu optimalnom. GSA algoritam je generisao optimalna rešenja u slučaju kada raskrsnica ima 2 i 3 faze, međutim, za 4, 5 i 6 faza su dobijeni lošiji rezultati u odnosu na rezultate PSO i BCO algoritama. 
+
+% TODO: tabela 1, slike 6.1, 6.2
+
+Drugi test scenario ima dva perioda analize koji je napravljen tako da su saobraćajni tokovi raskrsnica prezasićeni. S obzirom na to, javljaju se redovi neopsluženih vozila koji su prikazani u vrsti $Q_b / Q_{b+1}$ u tabeli 2.1. i 2.2. Pretpostavljeno je da pre prvog perioda ($b=1$) na raskrsnici nema neopsluženih vozila, odnosno da je $Q_b = 0$ za sve trake na raskrsnici. Poređenjem ovih metoda, pokazalo se da PSO i GSA algoritam generišu ista rešenja za sve razmatrane slučajeve u prvom i drugom periodu analize. U prvom periodu analize, GSA je uspeo da nađe optimalna rešenja za raskrsnicu sa 2 i 4 faze, dok je u drugom periodu analize uspeo da nađe samo optimalno rešenje u slučaju raskrsnice sa dve faze. U ostalim slučajevima, vrednosti funkcije cilja koje su dobijene primenom GSA su manje u poređenju sa vrednostima dobijenim PSO i BCO metodama, što je prikazano u tabelama 2.1. i 2.2. 
+
+% TODO: tabela 2.1, slike 7.1, 7.2, tabela 2.2, slike 8.1, 8.2
+
+Rezultati za treći test scenario su prikazani u tabeli 3. Ovaj scenario predstavlja najzahtevniji slučaj za upravljanje iz razloga što se u većem broju traka javljaju stanja prezasićenosti (Jovanović 2018). Kao i u drugom scenariju, i ovde je dat prikaz neopsluženih tokova na kraju jednog perioda analize. S obzirom na to da se podaci za prvi period analize $b=1$ drugog scenarija poklapaju sa prvim periodom analize $b=1$ trećeg scenarija, prikazani su samo rezultati drugog perioda analize. PSO je uspeo da nađe rešenja koja su jednaka rešenjima BCO algoritma. Ova rešenja su bolja od rešenja koja su dobijena primenom GSA algoritma. 
+
+% TODO: tabela 3, slike 9.1, 9.2
+
+S obzirom na to da su u prvom, drugom i trećem test primeru razmatrane raskrsnice kojima se upravlja sa 2, 3, 4, 5 i 6 faza, na slikama su prikazane konvergencije algoritama za svaku raskrsnicu sa navedenim brojem faza. Grafik pokazuje da algoritmi brže konvergiraju kada se raskrsnicom upravlja sa manjim brojem faza, jer opada kombinatorna složenost problema.
+
+Četvrti test primer predstavlja model realne raskrsnice u Beogradu: Kneza Miloša - Bulevar Kralja Aleksandra - Takovska. Na slici 5 su dati izgled raskrsnice, broj saobraćajnih traka i njihove oznake. Razmatrana su dva perioda analize. Rezultati primenjenih metoda su poređeni sa postojećim stanjem i rezultatima dobijenim primenom BCO metaheuristike i prikazani su u tabeli 4. Prema postojećem stanju, prosečni vremenski gubici vozila za prvi period analize ($b=1$) iznose: 255.31 s/voz. Prosečni vremenski gubici za signalne planove, koji su generisani GSA, PSO i BCO algoritmima, za prvi period analize iznose: 215.06, 189.78, 199.22, respektivno. 
+
+Na slici 12 i 13 prikazani su signalni planovi dobijeni GSA i PSO algoritmima. Signalni plan prikazuje ukupno vreme trajanja ciklusa C koji je podeljen na pet faza. Trajanje faza u sekundama je takođe označeno brojevima na slici. Svakoj fazi su dodeljeni određeni pravci kretanja označeni slovima abecede. U poređenju sa signalnim planom prema postojećem stanju (slika 11), GSA i PSO su uspeli da nađu bolje signalne planove. Prosečni vremenski gubici i broj neopsluženih vozila, koji su dobijeni tokom optimizacije, manji su u odnosu postojeće stanje. Komparacijom navedenih heurističkih metoda, zaključuje se da je GSA algoritam dao lošije rezultate, kao i u ostalim test primerima. Pokazalo se da su rezultati PSO algoritma bolji u odnosu na rezultate koji su dobijeni u radu (Jovanović 2018) BCO algoritmom, za prvi period analize.  
+U drugom periodu analize ($b=2$) prema postojećem stanju, prosečni vremenski gubici vozila iznose: 557.41 s/voz. Prosečni vremenski gubici za signalne planove, koji su generisani GSA, PSO i BCO algoritmima, za prvi period analize iznose: 400.21, 369.12, 390.27, respektivno. Najmanje vrednosti prosečnih vremenskih gubitaka i broja neopsluženih tokova su dostignute PSO algoritmom, za oba perioda analize. Na osnovu rezultata koji su prikazani u tabeli 4, zaključuje se da je PSO algoritam dao najbolji signalni plan test raskrsnice, u poređenju sa GSA i BCO algoritmom (slika 14) i postojećim stanjem.
+
+% TODO: Tabela 4, slika 10
+
+Na slici 10 je prikazana konvergencija GSA i PSO algoritama za poslednji test primer. Primećuje se da korišćeni algoritmi značajno poboljšavaju inicijalna rešenja do 5. iteracije, nakon koje su naredna poboljšanja rešenja veoma mala.
+
+% TODO: Slika 11, 12, 13, 14
+
+\section{Zaključak}
+
+U ovom radu je primenjen gravitacioni pretraživački algoritam (GSA) i optimizacija rojem čestica (PSO) za rešavanje problema optimizacije svetlosnih signala na izolovanoj signalisanoj raskrsnici u fiksnom režimu rada. Fitness funkcija koja je korišćena pri proračunima predstavlja minimizaciju ukupnih prosečnih vremenskih gubitaka svih vozila na raskrsnici. U oba algoritma je izvršena korekcija brzine i pozicije agenata, odnosno čestica, shodno ograničenjima opisanog problema. Testiranje je izvršeno na četiri test primera, od kojih je jedan primer realna raskrsnica, dok su ostala tri hipotetička. Pokazano je da je korišćeni algoritmi brzo konvergiraju ka dobrim rešenjima. Za većinu hipotetičkih test primera, rezultati PSO algoritma se poklapaju sa rezultatima dobijenim u referentnom radu (Jovanović 2018) primenom BCO algoritma, dok su rezultati GSA algoritma uglavnom lošiji u poređenju sa navedenim metodama. Prema dobijenim rezultatima za realnu test raskrsnicu, može se zaključiti da je PSO algoritam uspeo da generiše bolji signalni plan raskrsnice u odnosu na BCO, GSA i postojeće stanje. Poređenjem primenjenih heuristika, metod baziran na GSA algoritmu je i u ovom slučaju je generisao lošija rešenja od algoritma PSO i BCO. Međutim, pokazalo se da je GSA dao bolji raspored trajanja svetlosnih signala u odnosu na postojeći signalni plan raskrsnice, što zaključujemo na osnovu dobijenih prosečnih vremenskih gubitaka vozila (s/voz).
+
+Dalji rad bi obuhvatao moguća unapređenja GSA i PSO algoritma, kao i primenu drugih heurističkih modela na rešavanje problema optimizacije svetlosnih signala na izolovanoj raskrsnici. Razvijene metode bi se takođe mogle primeniti na rešavanje problema optimizacije rada zone raskrsnica, odnosno saobraćajne mreže. U procesu optimizacije je moguće uvesti nove fitness funkcije koje bi vršile proračun vremenskih gubitaka pešaka, potrošnju goriva, troškove eksploatacije i slično. Na taj način bi se efikasnije upravljalo saobraćajnim sistemom. 
+
+\section{Literatura}
+
+\Source{%
+    Jovanović D. A. 2018. 
+    \emph{Izbor signalnih planova za upravljanje saobraćajem primenom optimizacije kolonijom pčela.}
+    Doktorska disertacija. Saobraćajni fakultet Univerziteta u Beogradu.
+}
+\Source{%
+    Liu G., Xu J. 2012.
+    Traffic Signal Timing Optimization for Isolated Intersections Based on Differential Evolution Bacteria Foraging Algorithm.
+    \emph{Procedia -- Social and Behavioral Sciences.}
+    2012, 43 (4): 210-5.
+}
+\Source{%
+    Murat S. 2006. 
+    Comparison of fuzzy logic and artificial neural networks approaches in vehicle delay modeling. 
+    \emph{Transportation research, Part C: Emerging technologies.}
+    14 (5): 316-34.
+}
+\Source{%
+    Manual H. C. 2000.
+    \emph{HCM 2000.}
+    Washington D. C.: Transportation Research Board
+}
+\Source{%
+    Rashedi E., Nezamabadi-pour H., Saryazdi S. 2009.
+    GSA: A gravitational search algorithm.
+    \emph{Information Sciences}.
+    \textbf{179}: 2232-48.
+}
+\Source{%
+    Salter J. R. 1996.
+    \emph{Highway Traffic Analysis and Design}.
+    Macmillan
+}
+\Source{%
+    Kennedy J., Eberhart R. 1995.
+    Particle Swarm Optimization.
+    \emph{Proceedings of IEEE International Conference on Neural Networks}.
+    \textbf{4}: 1942-8.
+}
+\EndPaper
