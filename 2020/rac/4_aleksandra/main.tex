@@ -25,7 +25,9 @@ Pod pojmom saobraćajni tok se podrazumeva istovremeno kretanje više vozila na 
 
 Postoje dva generalna načina upravljanja saobraćajnim tokovima: upravljanje u fiksnom režimu rada i upravljanje u realnom vremenu. U ovom radu je razmatran problem optimizacije trajanja svetlosnih signala izolovane raskrsnice u fiksnom režimu rada. U slučaju fiksnog režima rada, tokovi se grupišu u određeni broj faza. Svakoj fazi se dodeljuje vremenski interval tokom kog se opslužuju vozila (zeleno svetlo na semaforu). Vreme koje protekne između dva uzastopna početka iste faze je ciklus (slika 1).
 
-% TODO: slika 1
+\Figure{figure_1.jpg}
+    {Upravljanje raskrsnicom sa dve faze u fiksnom režimu.}
+    {Two-phase intersection.}
 
 Cilj rada je razvijanje i testiranje metoda za optimizaciju upravljačkih parametara (ciklusa i raspodele zelenih vremena po fazama) koji minimiziraju ukupne prosečne vremenske gubitke vremena svih vozila koja prolaze raskrsnicom, u toku određenog perioda analize. Implementirana su dva heuristička algoritma: gravitacioni pretraživački algoritam (engl. Gravitational Search Algorithm) i optimizacija rojem čestica (engl. Particle Swarm Optimization). Izmenjena je njihova strategija pretraživanja novih rešenja, kako bi se postavila gornja i donja granica pretraživačkog prostora kome pripadaju vrednosti upravljačkih parametara. Testiranje metoda je izvršeno na numeričkim primerima, odnosno hipotetičkim raskrsnicama iz literature (Jovanović 2018) i na primeru realne raskrsnice u Beogradu. Takođe, dobijeni rezultati su poređeni sa rezultatima iz disertacije “Izbor signalnih planova za upravljanje saobraćajem primenom optimizacije kolonijom pčela” (Jovanović 2018).
 
@@ -265,7 +267,45 @@ Na ovaj način je izvršeno generisanje upravljačkih parametara (ciklusa i zele
 
 Opisani metod je testiran na hipotetičkim primerima, odnosno tri test scenarija. Prvi scenario prikazuje raskrsnicu sa nezasićenim tokovima u jednom periodu analize ($T=1h$, za $b = 1$) (slika 2). Drugi i treći scenario podrazumevaju dva perioda analize ($T=1h$, za $b\in\{1,2\}$) za prezasićene tokove (slika 3 i 4). Za svaki scenario su analizirani slučajevi kada se raskrsnicom upravlja sa 2, 3, 4, 5, ili 6 faza. U zavisnosti od broja faza, izvršen je odabir izgubljenog vremena $L$. Testiranje je izvršeno i na primeru realne raskrsnice u Beogradu, Kneza Miloša - Bulevar Kralja Aleksandra - Takovska, u dva perioda analize  ($T=1h$, za $b\in\{1,2\}$). Podaci o raspodeli traka po fazama, izgubljenom vremenu tokom ciklusa ($L$), kao i o saobraćajnim tokovima po trakama ($q$) i njihovim zasićenim vrednostima ($s$) dati su u disertaciji (Jovanović 2018) za svaku test raskrsnicu. Broj faza i raspored saobraćajnih traka za prvi, drugi i treći test primer prikazan je na slici 1, dok su ovi podaci za četvrtu raskrsnicu dati na slici. Brojevi prikazuju vrednosti saobraćajnog toka (voz/h) u saobraćajnim trakama, koje su označene slovima abecede. Strelice prikazuju pravac kretanja vozila u saobraćajnim trakama (NS - pravac sever-jug; WE - pravac zapad-istok). Kao što je navedeno u prethodnom poglavlju, ovi podaci predstavljaju ulazne veličine na osnovu kojih je izvršena optimizacija.
 
-% TODO: slike 2-5
+\Figure{figure_2.jpg}
+    {Broj faza i raspored saobraćajnih traka za test scenario 1, 2 i 3}
+    {Number of phases and schedule of traffic lanes for test scenario 1,2 and 3}
+
+\Figure{figure_3.jpg}
+    {Test raskrsnica za scenario 1.}
+    {Test intersection for test scenario 1.}
+
+\Figure{figure_4.jpg}
+    {Test raskrsnica za scenario 2.}
+    {Test intersection for test scenario 2.}
+
+\Figure{figure_5.jpg}
+    {Test raskrsnica za scenario 3.}
+    {Test intersection for test scenario 3.}
+
+\Figure{figure_6.jpg}
+    {Test raskrsnica: Kneza Miloša - Bulevar K. A. - Takovska.}
+    {Test intersection: Kneza Miloša - Bulevar K. A. - Takovska.}
+
+\TableDouble{
+    \begin{tabular}{c|c|ccccc}
+        \multicolumn{2}{c|}{Broj faza} & 2 & 3 & 4 & 5 & 6 \\
+        \hline
+        \multirow{3}{*}{GSA} & \makecell{Vrednost funkcije cilja\\ (s/voz)} & 10.85   & 19.90    & 34.98          & 56.23              & 104.50                 \\
+                             & Vreme ciklusa (s)                            & 30      & 42       & 75             & 82                 & 120                    \\
+                             & Zelena vremena (s)                           & 10, 10  & 12, 9, 9 & \makecell{18, 14,\\ 15, 14} & \makecell{17, 11, 13,\\ 13, 12} & \makecell{18, 18, 15,\\ 17, 18, 16} \\
+        \hline
+        \multirow{3}{*}{PSO} & \makecell{Vrednost funkcije cilja\\ (s/voz)} & 10.85   & 19.15    & 30.83          & 54.44              & 104.50                 \\
+                             & Vreme ciklusa (s)                            & 30      & 39       & 53             & 86                 & 120                    \\
+                             & Zelena vremena (s)                           & 10, 10  & 11, 9, 7 & \makecell{11, 8,\\ 11, 9  } & \makecell{16, 12, 14,\\ 15, 13} & \makecell{18, 18, 15,\\ 17, 18, 16} \\
+        \hline
+        \multirow{3}{*}{BCO} & \makecell{Vrednost funkcije cilja\\ (s/voz)} & 10.85   & 19.15    & 30.83          & 54.20              & 104.50                 \\
+                             & Vreme ciklusa (s)                            & 30      & 39       & 53             & 81                 & 120                    \\
+                             & Zelena vremena (s)                           & 10, 10  & 11, 9, 7 & \makecell{11, 8,\\ 11, 9  } & \makecell{15, 11, 13,\\ 14, 12} & \makecell{18, 18, 15,\\ 17, 18, 16} \\
+    \end{tabular}
+}
+    {Upoređivanje metoda za test scenario 1}
+    {Comparison of methods for test scenario 1}
 
 \section{Rezultati i diskusija}
 
@@ -275,11 +315,32 @@ U ovom poglavlju su dati grafici konvergencije GSA i PSO algoritama za svaki tes
 
 Rezultati za prvi test scenario su prikazani u tabeli 1. Dati su podaci o vrednosti fitness funkcije u zavisnosti od najboljih dobijenih rešenja: vrednosti ciklusa i zelenih vremena. Pokazano je da metode zasnovane na PSO i BCO heuristikama nalaze ista rešenja kada se raskrsnicom upravlja sa 2, 3, 4, i 6 faza, dok je za raskrsnicu sa 5 faza dobijeno rešenje blizu optimalnom. GSA algoritam je generisao optimalna rešenja u slučaju kada raskrsnica ima 2 i 3 faze, međutim, za 4, 5 i 6 faza su dobijeni lošiji rezultati u odnosu na rezultate PSO i BCO algoritama. 
 
-% TODO: tabela 1, slike 6.1, 6.2
+\TableDouble{
+    \begin{tabular}{c|c|ccccc}
+        \multicolumn{2}{c|}{Broj faza} & 2 & 3 & 4 & 5 & 6 \\
+        \hline
+        \multirow{3}{*}{GSA} & \makecell{Vrednost funkcije cilja\\ (s/voz)} & 264.86 & 379.78 & 344.99 & 709.55 & 1277.98   \\
+                             & Vreme ciklusa (s)                            &  120 & 120 & 120 & 120 & 120        \\
+                             & Zelena vremena (s)                           & 55, 55  & 51, 43, 14 & \makecell{42, 7,\\ 42, 15} & \makecell{36, 7, 36,\\ 12, 13} & \makecell{31, 12, 7,\\ 30, 10, 12} \\
+                             & $Q_b / Q_{b+1}$ & 0 / 518  & 0 / 710 & 0 / 640 & 0 / 1276 & 0 / 2028 \\
+        \hline
+        \multirow{4}{*}{PSO} & \makecell{Vrednost funkcije cilja\\ (s/voz)} & 264.86 & 379.78 & 344.99 & 709.55 & 1277.98   \\
+                             & Vreme ciklusa (s)                            &  120 & 120 & 120 & 120 & 120        \\
+                             & Zelena vremena (s)                           & 55, 55  & 51, 43, 14 & \makecell{42, 7,\\ 42, 15} & \makecell{36, 7, 36,\\ 12, 13} & \makecell{31, 12, 7,\\ 30, 10, 12} \\
+                             & $Q_b / Q_{b+1}$ & 0 / 518  & 0 / 710 & 0 / 640 & 0 / 1276 & 0 / 2028 \\
+        \hline
+        \multirow{4}{*}{BCO} & \makecell{Vrednost funkcije cilja\\ (s/voz)} & 264.86 & 379.78 & 344.99 & 709.55 & 1277.98   \\
+                             & Vreme ciklusa (s)                            &  120 & 120 & 120 & 120 & 120        \\
+                             & Zelena vremena (s)                           & 55, 55  & 51, 43, 14 & \makecell{42, 7,\\ 42, 15} & \makecell{36, 7, 36,\\ 12, 13} & \makecell{31, 12, 7,\\ 30, 10, 12} \\
+                             & $Q_b / Q_{b+1}$ & 0 / 518  & 0 / 710 & 0 / 640 & 0 / 1276 & 0 / 2028 \\
+    \end{tabular}
+}
+    {Upoređivanje metoda za test scenario 2. Period analize $b = 1$.}
+    {Comparison of methods for test scenario 2. Analysis period $b = 1$.}
 
 Drugi test scenario ima dva perioda analize koji je napravljen tako da su saobraćajni tokovi raskrsnica prezasićeni. S obzirom na to, javljaju se redovi neopsluženih vozila koji su prikazani u vrsti $Q_b / Q_{b+1}$ u tabeli 2.1. i 2.2. Pretpostavljeno je da pre prvog perioda ($b=1$) na raskrsnici nema neopsluženih vozila, odnosno da je $Q_b = 0$ za sve trake na raskrsnici. Poređenjem ovih metoda, pokazalo se da PSO i GSA algoritam generišu ista rešenja za sve razmatrane slučajeve u prvom i drugom periodu analize. U prvom periodu analize, GSA je uspeo da nađe optimalna rešenja za raskrsnicu sa 2 i 4 faze, dok je u drugom periodu analize uspeo da nađe samo optimalno rešenje u slučaju raskrsnice sa dve faze. U ostalim slučajevima, vrednosti funkcije cilja koje su dobijene primenom GSA su manje u poređenju sa vrednostima dobijenim PSO i BCO metodama, što je prikazano u tabelama 2.1. i 2.2. 
 
-% TODO: tabela 2.1, slike 7.1, 7.2, tabela 2.2, slike 8.1, 8.2
+% TODO: ...
 
 Rezultati za treći test scenario su prikazani u tabeli 3. Ovaj scenario predstavlja najzahtevniji slučaj za upravljanje iz razloga što se u većem broju traka javljaju stanja prezasićenosti (Jovanović 2018). Kao i u drugom scenariju, i ovde je dat prikaz neopsluženih tokova na kraju jednog perioda analize. S obzirom na to da se podaci za prvi period analize $b=1$ drugog scenarija poklapaju sa prvim periodom analize $b=1$ trećeg scenarija, prikazani su samo rezultati drugog perioda analize. PSO je uspeo da nađe rešenja koja su jednaka rešenjima BCO algoritma. Ova rešenja su bolja od rešenja koja su dobijena primenom GSA algoritma. 
 

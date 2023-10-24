@@ -3,7 +3,7 @@ LATEXFLAGS := \
 	-xelatex \
 	-cd- \
 	-latexoption=-shell-escape \
-	-latexoption=-interaction=nonstopmode
+	-latexoption=-interaction=nonstopmode \
 
 all: y2020
 

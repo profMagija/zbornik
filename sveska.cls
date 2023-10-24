@@ -35,6 +35,7 @@
 \RequirePackage{amsmath}
 \RequirePackage{import}
 \RequirePackage{multirow}
+\RequirePackage{makecell}
 
 \RequirePackage[absolute,overlay]{textpos}
 
@@ -488,5 +489,7 @@
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
+
+\setlocalecaption{serbian}{table}{Tabela}
 
 \sloppy
