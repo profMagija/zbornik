@@ -3,7 +3,7 @@ set palette gray
 
 set terminal pdf monochrome fontscale 0.75
 
-set xlabel 'Broj agenata'
+set xlabel 'Broj agenata [× 1000]'
 set ylabel 'Relativno odstupanje [%]'
 set xr [-1:8]
 set boxwidth 0.5
@@ -34,9 +34,9 @@ plot 'plots.dat' index 2 using ($1/1000):($2/1000) title 'CPU' w linespoints pt 
      ''          index 2 using ($1/1000):($3/1000) title 'GPU' w linespoints pt 6
 
 set logscale y
+set key bottom right
 
 set xr [0:110]
 set output "plot_5.pdf"
-plot 'plots.dat' index 3 using ($1/1000):($2/1000) title 'CPU' w linespoints pt 7, \
-     ''          index 3 using ($1/1000):($3/1000) title 'GPU' w linespoints pt 6
-
+plot 'plots.dat' index 3 using ($1/1000):($2/1000) title 'Bez a. f.' w linespoints pt 7, \
+     ''          index 3 using ($1/1000):($3/1000) title 'Sa a. f.' w linespoints pt 6
