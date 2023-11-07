@@ -1,0 +1,143 @@
+\Title{Enumeracija kona\v cnih modela prve grupe Hilbertovih aksioma}
+\TitleEng{Analysis of the impact of average execution time and the number of open files of a program on priority and time of execution of the processes in Linux}
+\Author{Milica Maksimovic, Milica Sobot}
+\begin{Abstract}
+Rad se bavi problemom enumeracije kona\v cnih modela prve grupe Hilbertovih aksioma (aksiome incidencije). Za razliku od svakodnevne, u kojoj radimo sa beskona\v cnim skupovima ta\v caka, u ovoj geometriji mi gledamo kona\v cne modele i utvr\dj ujemo koliko ih ima. Najpre se upoznajemo sa modelima sa najmanje mogu\' ce ta\v caka. Potom, uvodimo strukturu matroida koju \' cemo kasnije uvesti u usku vezu sa modelima koji zadovoljavaju kako samo neke, tako i sve aksiome prve grupe Hilbertovih aksioma. Nakon \v sto nam strukture matroida daju ta\v cne brojeve modela za manji broj ta\v caka, uve\v s\' cemo i strukturu projektivnih ravni koja \' ce nam pomo\' ci u oformljavanju donje granice za broj modela od $n$ ta\v caka. U poslednjem delu bavimo se ograni\v cavanjem broja modela sa gornje strane.
+\end{Abstract}
+\begin{AuthorEx}
+Milica Maksimovi\'c (2001), Ba\v cka Palanka, učenica 4. razreda gimnazije „20. Oktobar” u Ba\v ckoj Palanci
+
+MENTOR:\\
+Kristina Ago, diplomirani inženjer elektrotehnike i računarstva, inženjer za razvoj softvera, Continental Automotive d.o.o.
+\end{AuthorEx}
+\begin{AbstractEng}
+Process scheduling in multiprogramming operating systems is a problem on which the performance of the entire system depends. The idea behind this project was analyzing the impact of execution time on CPU and the number of executions of a program, and analyzing the impact of the number of opened files on the priority of a process.
+
+Modification of scheduling algorithm, so the number of execution times and execution time on CPU have an impact, is implemented by the introduction of a hash table (where the key represents the hash value of the executable code). Execution time on the CPU was read from the process descriptor and was saved as the average value in the hash table together with the number of executions. Depending on the ratio of execution time on CPU, and the number of execution times, the process has got bonuses/penalties in the range from -5 to 5. This enabled greater priority for processes that have shorter execution time and vice versa. For done tests, this algorithm gave better results than the CFS algorithm, but worse results than the original O(1) algorithm for the CPU bound processes. For tests with processes that imitated daemon processes, results of the modified algorithm were better then the original O(1) algorithm when there were more than one active “daemon” process. The results compared to the CFS algorithm were similar or worse.
+
+Another implementation was made by modification of part of the code in which are counted bonuses/penalties. There was added file counting for the process every five seconds. In this case, only bonuses are added in the range from 1 to 5 (first bonus is added when there are 5 open files because each process has 3 files opened by default (standard streams)).
+
+The first modification slowed down process loading, and the other scheduling algorithm itself, but both gave some better results for certain cases. Depending on system needs, both implemented modifications could have usage, or even their combination.
+\end{AbstractEng}
+
+\StartDoublePaper
+\label{rac.diana}
+
+\section{Uvod}
+
+U toku rada računara pokrene se više procesa, međutim, procesorsko jezgro može da izvršava samo jedan proces u datom trenutku. Iz tog razloga procesi moraju, ili u potpunosti završiti svoj rad, ili prepustiti procesor drugom procesu, kako bi korisnik imao utisak paralelnog izvršavanja procesa (Tanenbaum i Bos 2015: 86). Smenom procesa postiže se i bolja iskorišćenost procesora, pošto procesor ne mora da čeka proces dok isti izvršava neku ulazno-izlaznu operaciju (Marić 2017: 50).
+
+Da bi se procesi mogli smenjivati, neophodno je zapamtiti trenutno stanje procesa u trenutku kada mu se oduzmu procesorski resursi, što se postiže uvođenjem kontrolnog bloka procesa.
+
+Kontrolni blok procesa je struktura podataka koja pored trenutnog stanja procesa sadrži i druge podatke o procesu, koji se razlikuju u različitim implementacijama operativnih sistema, kao što su: prioritet, status, jedinstveni identifikator (PID), naziv korisnika koji je pokrenuo proces, zauzeti ulazno-izlazni uređaji, i slično (Tanenbaum i Bos 2015: 94).
+
+\AuthorExHere
+
+Kako kontrola prepuštanja procesorskih resursa iz samog programa otežava programiranje i dovodi do slabijih performansi operativnog sistema (gledajući sisteme koji se danas koriste), uveden je planer procesa (\emph{process scheduling algorithm}, u daljem tekstu: planer). Planer je algoritam koji vodi računa o rasporedu i dužini izvršavanja procesa u operativnom sistemu. S obzirom na različite upotrebe operativnih sistema i različite tipove procesa (\emph{I/O bound} - procesi koji veći deo izvšavanja provode čekajući ulazno/izlazne uređaje i \emph{CPU bound} - procesi koji u toku izvršavanja intenzivno koriste procesorske resurse), postoje i različiti algoritmi za planere, koji obezbeđuju različite performanse operativnog sistema (Šantavec 2019).
+
+Ovaj rad se zasniva na modifikaciji Linuksovog O(1) planera. Analizirani su vreme i učestalost izvršavanja procesa kada su u određivanje njegovog prioriteta bili uključeni prosečno vreme izvršavanja ili broj otvorenih datoteka. Implementacija algoritama je izvršena postepeno, tako da su posebno rađeni testovi za ispitivanje uticaja prosečnog vremena izvršavanja, a posebno testovi za ispitivanje uticaja broja otvorenih datoteka. Rezultati su upoređeni, kako međusobno, tako i sa originalnim O(1) planerom. Takođe su upoređeni i sa CFS planerom, koji se koristi i danas, u verziji jezgra 2.6.23.
+
+\section{Metode}
+
+U ovoj sekciji su objašnjeni pojmovi korišćeni za implementaciju projekta u odgovarajućim verzijama.
+
+\subsection{Proces}
+
+Svaki proces ima kontrolni blok procesa (u daljem tekstu: kontrolni blok), u kojem se pamti stanje nakon što mu se oduzmu procesorski resursi. Kako je modifikovan O(1) algoritam, posmatran je samo njegov kontrolni blok (verzija 2.6.22).  Ovaj kontrolni blok čini struktura \texttt{task\_struct} i elementi bitni za ovo istraživanje su:
+
+\section{Zaključak}
+
+Linuksova implementacija O(1) planera procesa je modifikovana na dva načina. Prva modifikacija je imala cilj da procesi koji se često pokreću i/ili kratko traju dobiju veći prioritet. Druga modifikacija je imala cilj da i broj otvorenih datoteka utiče na prioritet procesa. Rezultati su pokazali da se za obe modifikacije postigao željeni efekat.
+
+Prva modifikacija je omogućila da često pokretani procesi dobiju veći prioritet. Ovaj efekat je isto postignut i za procese koji se kratko izvršavaju. Ovakvom implementacijom je produženo vreme pokretanja procesa, iz razloga što se prilikom svakog pokretanja vrši heširanje celog izvršnog koda i postoji dodatno zauzeće memorije u vidu heš tabele. Implementirani algoritam je omogućio kraće izvršavanje procesa koji iziskuju dosta procesorskih resursa u odnosu na CFS algoritam. U poređenju sa O(1) algoritamom, implementirani algoritam je pokazao slične rezltate za vreme izvršavanje procesa. Razlog za ovakve rezultate je što CFS algoritam pokušava da uspostavi jednakost između procesa. Ovim on pokušava da ostvari jednakost između pozadinskih i test procesa. Nešto duže izvršavanje u poređenju sa O(1) algoritmom govori da dati bonusi i penali za ovakve testove nemaju dovoljan uticaj da bi se nadmašilo gubljenje vremena na određivanje heš vrednosti koda. Implementirani algoritam je pokazao bolje rezultate u odnosu na O(1) algoritam u slučaju procesa koji čekaju zahtev za izvršavanje. Razlog za ovakav rezultat je što algoritam daje veći prioritet procesu, jer je očekivano da se kraće izvršava, što će procesu omogućiti veću kvanut procesorskog vremena u odnosu na pozadinske procese. U poređenju sa CFS  agloritmom, dobijeni rezultati su bili slični ili lošiji. Rezultat može da se objasni činjenicom da će kod CFS algoritma proces imati jako malo potrošenog proceskorskog vremena (sa uračunatim bonusima i penalima). Iz ovog razloga će dobijati vrlo brzo i dovoljno dugo procesorske resurse da završi svoj rad bez čestog ponovnog čekanja.
+
+Druga modifikacija je omogućila povećanje prioriteta procesa sa povećanjem broja otvorenih datoteka. Kako prebrojavanje iziskuje prolazak kroz listu svih otvorenih datoteka, ono se vršilo na svakih 5 sekundi, ili ređe. Dobijenim rezltatima je pokazano da je željeni efekat postignut. Odlučeno je da se ne daju penali, iz razloga što je smatrano da i u slučaju da proces ima makar jedanu otvorenu datoteku treba što pre da oslobodi drugim procesima pristup datoteci. Ovakva modifikacija algoritma bi mogla da ima veću prednost u sistemima gde više procesa zahteva pristup istoj datoteci u isto vreme. 
+
+Moguće poboljšanje za planer koji uzima broj otvorenih datoteka u obzir bi bilo efikasnije brojanje otvorenih datoteka. Umesto brojanja elementata u listi, modifikacija strukture otvorenih datoteka bi dovela do boljih performansi. Modifikacija bi se mogla izvršiti jednostavnim dodavanjem brojača. Ovim bi se izgubila potreba za prolaskom kroz listu svih otvorenih datoteka, pa bi ovakva modifikacija dovela do kraćeg vremena izvršavanja planera procesa u odnosu na trenutno implementirani.
+
+Takođe, nije provereno da li bi sistem sa ovakvim dodatnim zauzećem memorije mogao da pokrene isti broj procesa, kao i originalni bez dodatnih modifikacija.
+
+\section{Literatura}
+\Source{%
+    Algorithms in C, Hash algorithms,\\
+    https://thealgorithms.github.io/C/d7/d3b/\\group\_\_hash.html
+    [Pristupljeno 12. maja 2021].
+}
+\Source{%
+    Busybox. Dostupno na:\\
+    https://www.commandlinux.com/man-page/man1/\\busybox.1.html
+    [Pristupljeno 12. maja 2021].
+}
+\Source{%
+    Clock sources, Clock events, sched clock() and delay timers, (kernel timekeeping abstractions). 
+    Dostupno na:\\ https://www.kernel.org/doc/Documentation/\\timers/timekeeping.txt 
+    [Pristupljeno 3. septembra 2020].
+}
+\Source{%
+    Cormen T. H., Leiserson C. E., Rivest R. R., Stein C. 2009. 
+    \emph{Introduction to Algorithms}.
+    Kembridž: MIT Press
+}
+\Source{%
+    Ishkov N. 2015.
+    \emph{A complete guide to Linux process scheduling}. MSc Thesis.
+    University of Tampere, School of Information Sciences
+}
+\Source{%
+    Knuth D. E. 1998.
+    \emph{The art of computer programming}.
+    Boston: Addison-Wesley
+}
+\Source{%
+    Linux Interview Questions 2020. Linux Interview Questions: Open Files / Open File Descriptors.
+    Dostupno na:\\https://www.thegeekdiary.com/linux-interview-\\questions-open-files-open-file-descriptors/
+    [Pristupljeno 3. septembra 2021].
+}
+\Source{%
+    Linux Programmer’s manual, stdin(03). 
+    Dostupno na:\\https://man7.org/linux/man-pages/man3/stdout.3\\.html 
+    [Pristupljeno 12. maja 2021].
+}
+\Source{%
+    Love R. 2005.
+    \emph{Linux kernel development, second edition}.
+    Karmel: Sams Publishing
+}
+\Source{%
+    Love R. 2010.
+    \emph{Linux kernel development, third edition}.
+    Boston: Addison-Wesley
+}
+\Source{%
+    Marić M. 2017.
+    \emph{Operativni sistemi}.
+    Beograd: Univerzitet u Beogradu
+}
+\Source{%
+    Qemu.
+    Dostupno na: https://qemu.org 
+    [Pristupljeno 3. septembra 2020].
+}
+\Source{%
+    Schmidt B. 2015.
+    CPU Clocks and Clock Interrupts, and Their Effects on Schedulers.
+    U \emph{Overload}, \textbf{23} (130): 23.
+    Dostupno na:\\https://accu.org/journals/overload/23/130/\\schmidt\_2185/
+}
+\Source{%
+    Šantavec D. 2019.
+    Implementacija kružnog algoritma sa zadržavanjem u planeru procesa na MP/M II operativnom sistemu.
+    \emph{Petničke sveske}, 78: 329.
+}
+\Source{%
+    Tanenbaum S. A., Bos H. 2015.
+    \emph{Modern Operating Systems}.
+    London: Pearson
+}
+\Source{%
+    tuxthink 2012. \emph{Module to print the open files of a process}.
+    Dostupno na: \\https://tuxthink.blogspot.com/2012/05/module-to-\\print-open-files-of-process.html
+    [Pristupljeno 3. septembra 2020.]
+}
+\EndPaper
+\clearpage
