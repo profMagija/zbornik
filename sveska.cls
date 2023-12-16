@@ -36,7 +36,7 @@
 \RequirePackage{import}
 \RequirePackage{multirow}
 \RequirePackage{amsthm}
-
+\RequirePackage{booktabs,multicol, multirow,boldline,makecell}
 \RequirePackage[absolute,overlay]{textpos}
 
 \RequirePackage[serbian, english]{babel}

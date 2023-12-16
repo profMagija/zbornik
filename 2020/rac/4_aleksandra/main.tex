@@ -278,14 +278,208 @@ Rezultati za prvi test scenario su prikazani u tabeli 1. Dati su podaci o vredno
 
 % TODO: tabela 1, slike 6.1, 6.2
 
+% Tabela 1 
+
+\begin{table*}
+    \begin{center}
+      \begin{tabular}{p{0.12\linewidth}p{0.12\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}}
+        \hline 
+        \multicolumn{3}{c}{Broj faza} & 2 & 3 & 4 & 5 & 6 \\ 
+        \hline 
+        \multirow{3}{4em}{\textbf{GSA}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                    
+        & 10.85 & 19.90 & 34.98 & 56.23 & 104.50 \\ 
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 30 & 42 & 75 & 82 & 120 \\ 
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        & 10, 10 & 12,9,9 & 18, 14, 15, 14 & 17, 11, 13, 13, 12 & 18, 18, 15, 17, 18, 16 \\ 
+  
+  
+        \hline
+        \multirow{3}{4em}{\textbf{PSO}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                    
+        & 10.85 & 19.15 & 30.83 & 54.44 & 104.50 \\ 
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 30 & 39 & 53 & 86 & 120 \\ 
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        & 10, 10 & 11, 9, 7 & 11, 8, 11, 9 & 16, 12, 14, 15, 13 & 18, 18, 15, 17, 18, 16 \\ 
+  
+  
+        \hline
+        \multirow{3}{4em}{\textbf{BCO}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                    
+        & 
+        10.85  & 19.15  & 30.83  & 54.20  & 104.50 \\ 
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 30 & 39 & 53 & 81 & 120 \\ 
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        & 10, 10 & 11,9,7 &11, 8, 11, 9 & 15,11,13, 14,12 & 18, 18, 15, 17, 18, 16 \\ 
+  
+  
+        \hline
+      \end{tabular}
+    \end{center}
+  \end{table*}
+  
 Drugi test scenario ima dva perioda analize koji je napravljen tako da su saobraćajni tokovi raskrsnica prezasićeni. S obzirom na to, javljaju se redovi neopsluženih vozila koji su prikazani u vrsti $Q_b / Q_{b+1}$ u tabeli 2.1. i 2.2. Pretpostavljeno je da pre prvog perioda ($b=1$) na raskrsnici nema neopsluženih vozila, odnosno da je $Q_b = 0$ za sve trake na raskrsnici. Poređenjem ovih metoda, pokazalo se da PSO i GSA algoritam generišu ista rešenja za sve razmatrane slučajeve u prvom i drugom periodu analize. U prvom periodu analize, GSA je uspeo da nađe optimalna rešenja za raskrsnicu sa 2 i 4 faze, dok je u drugom periodu analize uspeo da nađe samo optimalno rešenje u slučaju raskrsnice sa dve faze. U ostalim slučajevima, vrednosti funkcije cilja koje su dobijene primenom GSA su manje u poređenju sa vrednostima dobijenim PSO i BCO metodama, što je prikazano u tabelama 2.1. i 2.2. 
 
 % TODO: tabela 2.1, slike 7.1, 7.2, tabela 2.2, slike 8.1, 8.2
 
+% Tabela 2.1
+
+\begin{table*}
+    \begin{center}
+      \begin{tabular}{p{0.12\linewidth}p{0.12\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}}
+        \hline 
+        \multicolumn{3}{c}{Broj faza} & 2 & 3 & 4 & 5 & 6 \\ 
+        \hline 
+        \multirow{4}{4em}{\textbf{GSA}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                    
+        & 264.86 & 379.78 & 344.99 & 709.55 & 1277.98\\ 
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 120 & 120 & 120 & 120 & 120 \\ 
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        &  55, 55 & 51, 43, 14 & 42, 7, 42, 15 &  36, 7, 36, 12, 13 & 31, 12, 7, 30, 10, 12 \\ 
+        \cmidrule{2-8}
+        & \multicolumn{2}{c}{$ Q_b / Q_{b+1}$} 
+        & 0 / 518 & 0 / 710 & 0 / 640 & 0 / 1276 & 0 / 2028  \\
+        
+        \hline
+        \multirow{4}{4em}{\textbf{PSO}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                    
+        & 264.86 & 379.50 & 344.99 & 709 & 1272.48  \\
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 120 & 120 & 120 & 120 & 120 \\ 
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        &  55, 55 & 51, 42, 15 & 42, 7, 42, 15 & 37, 7, 36, 12, 12 & 31, 12, 7, 31, 10, 11  \\
+        \cmidrule{2-8}
+        & \multicolumn{2}{c}{$ Q_b / Q_{b+1}$} 
+        & 0 / 518 & 0 / 720 & 0 / 640 & 0 / 1264 & 0 / 2016  \\
+        \hline
+        \multirow{4}{4em}{\textbf{BCO}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                     
+        & 264.86 & 379.50 & 344.99 & 709 & 1272.48  \\
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 120 & 120 & 120 & 120 & 120 \\ 
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        &  55, 55 & 51, 42, 15 & 42, 7, 42, 15 & 37, 7, 36, 12, 12 & 31, 12, 7, 31, 10, 11  \\
+        \cmidrule{2-8}
+        & \multicolumn{2}{c}{$ Q_b / Q_{b+1}$} 
+        & 0 / 518 & 0 / 720 & 0 / 640 & 0 / 1264 & 0 / 2016  \\
+        \hline
+      \end{tabular}
+    \end{center}
+  \end{table*}
+  
+  
+  % Tabela 2.2
+  
+  \begin{table*}
+    \begin{center}
+      \begin{tabular}{p{0.12\linewidth}p{0.12\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}}
+        \hline 
+        \multicolumn{3}{c}{Broj faza} & 2 & 3 & 4 & 5 & 6 \\ 
+        \hline 
+        \multirow{4}{4em}{\textbf{GSA}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                    
+        & 120.72 & 296.81 & 285.06 & 1237.71 & 2798.32 \\
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 120 & 111 & 117 & 120 & 120 \\
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        & 55, 55 & 45, 34, 20 & 35, 10, 37, 21 & 30, 8, 34, 16, 16 & 26, 16, 7, 26, 14, 13 \\
+        \cmidrule{2-8}
+        & \multicolumn{2}{c}{$ Q_b / Q_{b+1}$} 
+        & 518 / 0 & 710 / 116 & 640 / 91 & 1264 / 1002 & 2028 / 2442  \\
+        
+        \hline
+        \multirow{4}{4em}{\textbf{PSO}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                    
+        & 120.72 & 290.75 & 280.11 & 1235.08 & 2795.44 \\
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 120 & 120 & 120 & 120 & 120 \\ 
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        & 55, 55 & 49, 37, 22 & 35, 12, 37, 22 & 30, 8, 33, 17, 16 & 24, 16, 7, 27, 15, 13 \\
+        \cmidrule{2-8}
+        & \multicolumn{2}{c}{$ Q_b / Q_{b+1}$} 
+        & 518 / 0 & 720 / 94 & 640 / 79  & 1264 / 1025 &  2016 / 2451 \\
+        \hline
+        \multirow{4}{4em}{\textbf{BCO}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                     
+        & 120.72 & 290.75 & 280.11 & 1235.08 & 2795.44  \\
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 120 & 120 & 120 & 120 & 120 \\ 
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        &  55, 55 & 51, 42, 15 & 42, 7, 42, 15 & 37, 7, 36, 12, 12 & 31, 12, 7, 31, 10, 11  \\
+        \cmidrule{2-8}
+        & \multicolumn{2}{c}{$ Q_b / Q_{b+1}$} 
+        & 518 / 0 & 720 / 94 & 640 / 79  & 1264 / 1025 &  2016 / 2448 \\
+        \hline
+      \end{tabular}
+    \end{center}
+  \end{table*}
+  
 Rezultati za treći test scenario su prikazani u tabeli 3. Ovaj scenario predstavlja najzahtevniji slučaj za upravljanje iz razloga što se u većem broju traka javljaju stanja prezasićenosti (Jovanović 2018). Kao i u drugom scenariju, i ovde je dat prikaz neopsluženih tokova na kraju jednog perioda analize. S obzirom na to da se podaci za prvi period analize $b=1$ drugog scenarija poklapaju sa prvim periodom analize $b=1$ trećeg scenarija, prikazani su samo rezultati drugog perioda analize. PSO je uspeo da nađe rešenja koja su jednaka rešenjima BCO algoritma. Ova rešenja su bolja od rešenja koja su dobijena primenom GSA algoritma. 
 
 % TODO: tabela 3, slike 9.1, 9.2
 
+\begin{table*}
+    \begin{center}
+      \begin{tabular}{p{0.12\linewidth}p{0.12\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}}
+        \hline 
+        \multicolumn{3}{c}{Broj faza} & 2 & 3 & 4 & 5 & 6 \\ 
+        \hline 
+        \multirow{4}{4em}{\textbf{GSA}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                    
+        & 1105.10 & 1483.32 & 1422.74 & 2634.23 & 4354.34 \\
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 120 & 116 & 120 & 129 & 120 \\
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        &  52, 58 &   46, 43, 15 & 40, 8, 42, 16 & 34, 8, 37, 10, 14 & 27, 12, 7, 34, 11, 11 \\
+        \cmidrule{2-8}
+        & \multicolumn{2}{c}{$ Q_b / Q_{b+1}$} 
+        & 518 / 1760 & 710 / 2183 & 640 / 2181 & 1276 / 3460 & 2028 / 4965 \\
+        
+        \hline
+        \multirow{4}{4em}{\textbf{PSO}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                    
+        & 1104.74 & 1477.23 & 1421.52 & 2602.97 & 4317.82 \\
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 120 & 120 & 120 & 120 & 120 \\ 
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        &  51, 59 &   48, 44, 16 & 39, 8, 43, 16 & 34, 7, 38, 11, 14 & 29, 12, 7, 32, 10, 12 \\
+        \cmidrule{2-8}
+        & \multicolumn{2}{c}{$ Q_b / Q_{b+1}$} 
+        & 518 / 1749 & 720 / 2186 & 640 / 2163 & 1264 / 3440 & 2016 / 4956 \\
+        \hline
+        \multirow{4}{4em}{\textbf{BCO}} & \multicolumn{2}{c}{Vrednost funkcije cilja}                     
+        & 1104.74 & 1477.23 & 1421.52 & 2602.97 & 4317.82 \\
+        \cmidrule{2-8}
+        & \multirow{2}{0.9\linewidth}{Najbolje dobijeno rešenje} & ciklus 
+        & 120 & 120 & 120 & 120 & 120 \\ 
+                               \cmidrule{3-8}
+                               &  & Zelena vremena   
+        &  51, 59 &   48, 44, 16 &  39, 8, 43, 16 &  34, 7, 38, 11, 14 &  29, 12, 7, 32, 10, 12 \\
+        \cmidrule{2-8}
+        & \multicolumn{2}{c}{$ Q_b / Q_{b+1}$} 
+        & 518 / 1749 & 720 / 2186 & 640 / 2163 & 1264 / 3440 & 2016 / 4956 \\
+      \hline
+      \end{tabular}
+    \end{center}
+  \end{table*}
+  
+  
+  
 S obzirom na to da su u prvom, drugom i trećem test primeru razmatrane raskrsnice kojima se upravlja sa 2, 3, 4, 5 i 6 faza, na slikama su prikazane konvergencije algoritama za svaku raskrsnicu sa navedenim brojem faza. Grafik pokazuje da algoritmi brže konvergiraju kada se raskrsnicom upravlja sa manjim brojem faza, jer opada kombinatorna složenost problema.
 
 Četvrti test primer predstavlja model realne raskrsnice u Beogradu: Kneza Miloša - Bulevar Kralja Aleksandra - Takovska. Na slici 5 su dati izgled raskrsnice, broj saobraćajnih traka i njihove oznake. Razmatrana su dva perioda analize. Rezultati primenjenih metoda su poređeni sa postojećim stanjem i rezultatima dobijenim primenom BCO metaheuristike i prikazani su u tabeli 4. Prema postojećem stanju, prosečni vremenski gubici vozila za prvi period analize ($b=1$) iznose: 255.31 s/voz. Prosečni vremenski gubici za signalne planove, koji su generisani GSA, PSO i BCO algoritmima, za prvi period analize iznose: 215.06, 189.78, 199.22, respektivno. 
@@ -295,6 +489,54 @@ U drugom periodu analize ($b=2$) prema postojećem stanju, prosečni vremenski g
 
 % TODO: Tabela 4, slika 10
 
+% Tabela 4 
+\begin{table*}
+    \begin{center}
+      \begin{tabular}{p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}}
+        \toprule
+        $ T = 1h $ & \multicolumn{2}{c}{\textbf{Postojeće stanje}}
+        & \multicolumn{2}{c}{\textbf{GSA optimizacija}}
+        & \multicolumn{2}{c}{\textbf{PSO optimizacija}} 
+        & \multicolumn{2}{c}{\textbf{BCO optimizacija}} \\ 
+        \midrule
+  Kriterijum &
+  Prosečni vremenski gubici (s/voz) & 
+  Broj neopsluženih vozila (voz) & 
+  Prosečni vremenski gubici (s/voz) & 
+  Broj neopsluženih vozila (voz) & 
+  Prosečni vremenski gubici (s/voz) & 
+  Broj neopsluženih vozila (voz) & 
+  Prosečni vremenski gubici (s/voz) & 
+  Broj neopsluženih vozila (voz) \\ 
+  \hline
+  Period $b=1$ & 
+  255.31 & 
+  403 & 
+  215.06 & 
+  306 & 
+  189.78 & 
+  267 & 
+  199.22 & 
+  249 \\ 
+  \hline
+  
+  Period $b=2$ & 
+  557.41 &
+  647  &
+  400.21 &
+  426 & 
+  369.12 & 
+  384 &
+  390.27 & 
+  410 \\
+  
+  \bottomrule
+  
+        
+      \end{tabular}
+    \end{center}
+  \end{table*}
+  
 Na slici 10 je prikazana konvergencija GSA i PSO algoritama za poslednji test primer. Primećuje se da korišćeni algoritmi značajno poboljšavaju inicijalna rešenja do 5. iteracije, nakon koje su naredna poboljšanja rešenja veoma mala.
 
 % TODO: Slika 11, 12, 13, 14
