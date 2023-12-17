@@ -25,8 +25,7 @@ Pod pojmom saobraćajni tok se podrazumeva istovremeno kretanje više vozila na 
 
 Postoje dva generalna načina upravljanja saobraćajnim tokovima: upravljanje u fiksnom režimu rada i upravljanje u realnom vremenu. U ovom radu je razmatran problem optimizacije trajanja svetlosnih signala izolovane raskrsnice u fiksnom režimu rada. U slučaju fiksnog režima rada, tokovi se grupišu u određeni broj faza. Svakoj fazi se dodeljuje vremenski interval tokom kog se opslužuju vozila (zeleno svetlo na semaforu). Vreme koje protekne između dva uzastopna početka iste faze je ciklus (slika 1).
 
-% TODO: slika 1
-
+\Figure{./slika_1.png}{Broj faza i raspored saobraćajnih traka za test scenario 1,2 i 3}{Number of phases and schedule of traffic lanes for test scenario 1,2 and 3}
 
 Cilj rada je razvijanje i testiranje metoda za optimizaciju upravljačkih parametara (ciklusa i raspodele zelenih vremena po fazama) koji minimiziraju ukupne prosečne vremenske gubitke vremena svih vozila koja prolaze raskrsnicom, u toku određenog perioda analize. Implementirana su dva heuristička algoritma: gravitacioni pretraživački algoritam (engl. \emph{Gravitational Search Algorithm}) i optimizacija rojem čestica (engl. \emph{Particle Swarm Optimization}). Izmenjena je njihova strategija pretraživanja novih rešenja, kako bi se postavila gornja i donja granica pretraživačkog prostora kome pripadaju vrednosti upravljačkih parametara. Testiranje metoda je izvršeno na numeričkim primerima, odnosno hipotetičkim raskrsnicama iz literature (Jovanović 2018) i na primeru realne raskrsnice u Beogradu. Takođe, dobijeni rezultati su poređeni sa rezultatima iz disertacije “Izbor signalnih planova za upravljanje saobraćajem primenom optimizacije kolonijom pčela” (Jovanović 2018).
 
@@ -267,6 +266,15 @@ Na ovaj način je izvršeno generisanje upravljačkih parametara (ciklusa i zele
 Opisani metod je testiran na hipotetičkim primerima, odnosno tri test scenarija. Prvi scenario prikazuje raskrsnicu sa nezasićenim tokovima u jednom periodu analize ($T=1h$, za $b = 1$) (slika 2). Drugi i treći scenario podrazumevaju dva perioda analize ($T=1h$, za $b\in\{1,2\}$) za prezasićene tokove (slika 3 i 4). Za svaki scenario su analizirani slučajevi kada se raskrsnicom upravlja sa 2, 3, 4, 5, ili 6 faza. U zavisnosti od broja faza, izvršen je odabir izgubljenog vremena $L$. Testiranje je izvršeno i na primeru realne raskrsnice u Beogradu, Kneza Miloša - Bulevar Kralja Aleksandra - Takovska, u dva perioda analize  ($T=1h$, za $b\in\{1,2\}$). Podaci o raspodeli traka po fazama, izgubljenom vremenu tokom ciklusa ($L$), kao i o saobraćajnim tokovima po trakama ($q$) i njihovim zasićenim vrednostima ($s$) dati su u disertaciji (Jovanović 2018) za svaku test raskrsnicu. Broj faza i raspored saobraćajnih traka za prvi, drugi i treći test primer prikazan je na slici 1, dok su ovi podaci za četvrtu raskrsnicu dati na slici. Brojevi prikazuju vrednosti saobraćajnog toka (voz/h) u saobraćajnim trakama, koje su označene slovima abecede. Strelice prikazuju pravac kretanja vozila u saobraćajnim trakama (NS - pravac sever-jug; WE - pravac zapad-istok). Kao što je navedeno u prethodnom poglavlju, ovi podaci predstavljaju ulazne veličine na osnovu kojih je izvršena optimizacija.
 
 % TODO: slike 2-5
+\Figure{slika_2.png}{Test raskrsnica za scenario 1}{test intersection for test scenario 1}
+
+\Figure{slika_3.png}{Test raskrsnica za scenario 2}{Test intersection for test scenario 2}
+
+\Figure{slika_4.png}{Test raskrsnica za scenario 3}{Test intersection for test scenario 3}
+
+\Figure{slika_5.png}{Test raskrsnica: Kneza Miloša - Bulevar K. A. - Takovska.}{Test intersection: Kneza Miloša - Bulevar K. A. - Takovska.}
+
+
 
 \section{Rezultati i diskusija}
 
