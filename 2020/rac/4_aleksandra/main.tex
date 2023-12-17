@@ -280,11 +280,14 @@ Opisani metod je testiran na hipotetičkim primerima, odnosno tri test scenarija
 
 U radu su prikazani rezultati optimizacije u kojoj se na početku svake iteracije dodeljuju trenutno najbolja poznata rešenja agentima (česticama). Takođe je implementiran i drugi način inicijalizacije rešenja: na početku svake iteracije se generišu druga rešenja i dodeljuju se agentima. U drugom navedenom slučaju, algoritmi daju lošije rezultate u poređenju sa rezultatima prikazanim u ovom poglavlju. S obzirom na to, rezultati navedenog slučaja nisu prikazani u radu. Dobijeni rezultati su poređeni sa rezultatima optimizacije kolonijom pčela (engl. \emph{Bee Colony Optimization – BCO}) iz disertacije (Jovanović 2018) koji je testiran na istim numeričkim primerima.
 
-U ovom poglavlju su dati grafici konvergencije GSA i PSO algoritama za svaki test primer (slike 7.1, 7.2, 8.1, 8.2, 9.1, 9.2 i 10). Na osnovu njih se može zaključiti da oba algoritma brže konvergiraju ka rešenju.
+U ovom poglavlju su dati grafici konvergencije GSA i PSO algoritama za svaki test primer (slike 6, 7, 8, 9, 10, 11, 12, 13 i 14). Na osnovu njih se može zaključiti da oba algoritma brže konvergiraju ka rešenju.
 
 Rezultati za prvi test scenario su prikazani u tabeli 1. Dati su podaci o vrednosti \emph{fitness} funkcije u zavisnosti od najboljih dobijenih rešenja: vrednosti ciklusa i zelenih vremena. Pokazano je da metode zasnovane na PSO i BCO heuristikama nalaze ista rešenja kada se raskrsnicom upravlja sa 2, 3, 4, i 6 faza, dok je za raskrsnicu sa 5 faza dobijeno rešenje blizu optimalnom. GSA algoritam je generisao optimalna rešenja u slučaju kada raskrsnica ima 2 i 3 faze, međutim, za 4, 5 i 6 faza su dobijeni lošiji rezultati u odnosu na rezultate PSO i BCO algoritama. 
 
-% TODO: tabela 1, slike 6.1, 6.2
+\Figure{plot_1.pdf}{Konvergencija GSA algoritma za test scenario 1}{Convergence curve of GSA algorithm for test scenario 1}
+
+\Figure{plot_2.pdf}{Konvergencija PSO algoritma za test scenario 1}{Convergence curve of PSO algorithm for test scenario 1}
+
 
 % Tabela 1 
 
@@ -332,9 +335,18 @@ Rezultati za prvi test scenario su prikazani u tabeli 1. Dati su podaci o vredno
     \end{center}
   \end{table*}
   
-Drugi test scenario ima dva perioda analize koji je napravljen tako da su saobraćajni tokovi raskrsnica prezasićeni. S obzirom na to, javljaju se redovi neopsluženih vozila koji su prikazani u vrsti $Q_b / Q_{b+1}$ u tabeli 2.1. i 2.2. Pretpostavljeno je da pre prvog perioda ($b=1$) na raskrsnici nema neopsluženih vozila, odnosno da je $Q_b = 0$ za sve trake na raskrsnici. Poređenjem ovih metoda, pokazalo se da PSO i GSA algoritam generišu ista rešenja za sve razmatrane slučajeve u prvom i drugom periodu analize. U prvom periodu analize, GSA je uspeo da nađe optimalna rešenja za raskrsnicu sa 2 i 4 faze, dok je u drugom periodu analize uspeo da nađe samo optimalno rešenje u slučaju raskrsnice sa dve faze. U ostalim slučajevima, vrednosti funkcije cilja koje su dobijene primenom GSA su manje u poređenju sa vrednostima dobijenim PSO i BCO metodama, što je prikazano u tabelama 2.1. i 2.2. 
+Drugi test scenario ima dva perioda analize koji je napravljen tako da su saobraćajni tokovi raskrsnica prezasićeni. S obzirom na to, javljaju se redovi neopsluženih vozila koji su prikazani u vrsti $Q_b / Q_{b+1}$ u tabeli 2. i 3. Pretpostavljeno je da pre prvog perioda ($b=1$) na raskrsnici nema neopsluženih vozila, odnosno da je $Q_b = 0$ za sve trake na raskrsnici. Poređenjem ovih metoda, pokazalo se da PSO i GSA algoritam generišu ista rešenja za sve razmatrane slučajeve u prvom i drugom periodu analize. U prvom periodu analize, GSA je uspeo da nađe optimalna rešenja za raskrsnicu sa 2 i 4 faze, dok je u drugom periodu analize uspeo da nađe samo optimalno rešenje u slučaju raskrsnice sa dve faze. U ostalim slučajevima, vrednosti funkcije cilja koje su dobijene primenom GSA su manje u poređenju sa vrednostima dobijenim PSO i BCO metodama, što je prikazano u tabelama 2. i 3. 
 
 % TODO: tabela 2.1, slike 7.1, 7.2, tabela 2.2, slike 8.1, 8.2
+\Figure{plot_3.pdf}{Konvergencija GSA algoritma za test scenario 2. Period analize $b=1$}{Convergence curve of GSA algorithm for test scenario 2. Period analysis $b=1$}
+
+\Figure{plot_4.pdf}{Konvergencija PSO algoritma za test scenario 2. Period analize $b=1$}{Convergence curve of PSO algorithm for test scenario 2. Period analysis $b=1$}
+
+
+\Figure{plot_5.pdf}{Konvergencija GSA algoritma za test scenario 2. Period analize $b=2$}{Convergence curve of GSA algorithm for test scenario 2. Period analysis $b=2$}
+
+\Figure{plot_6.pdf}{Konvergencija PSO algoritma za test scenario 2. Period analize $b=2$}{Convergence curve of PSO algorithm for test scenario 2. Period analysis $b=2$}
+
 
 % Tabela 2.1
 
@@ -439,6 +451,14 @@ Rezultati za treći test scenario su prikazani u tabeli 3. Ovaj scenario predsta
 
 % TODO: tabela 3, slike 9.1, 9.2
 
+
+\Figure{plot_7.pdf}{Konvergencija GSA algoritma za test scenario 3. Period analize $b=2$}{Convergence curve of GSA algorithm for test scenario 3. Period analysis $b=2$}
+
+\Figure{plot_8.pdf}{Konvergencija PSO algoritma za test scenario 3. Period analize $b=2$}{Convergence curve of PSO algorithm for test scenario 3. Period analysis $b=2$}
+
+
+
+
 \begin{table*}
     \begin{center}
       \begin{tabular}{p{0.12\linewidth}p{0.12\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}}
@@ -496,6 +516,8 @@ Na slici 12 i 13 prikazani su signalni planovi dobijeni GSA i PSO algoritmima. S
 U drugom periodu analize ($b=2$) prema postojećem stanju, prosečni vremenski gubici vozila iznose: 557.41 s/voz. Prosečni vremenski gubici za signalne planove, koji su generisani GSA, PSO i BCO algoritmima, za prvi period analize iznose: 400.21, 369.12, 390.27, respektivno. Najmanje vrednosti prosečnih vremenskih gubitaka i broja neopsluženih tokova su dostignute PSO algoritmom, za oba perioda analize. Na osnovu rezultata koji su prikazani u tabeli 4, zaključuje se da je PSO algoritam dao najbolji signalni plan test raskrsnice, u poređenju sa GSA i BCO algoritmom (slika 14) i postojećim stanjem.
 
 % TODO: Tabela 4, slika 10
+
+\Figure{plot_9.pdf}{Konvergencija GSA i PSO algoritma za test raskrsnicu}{Convergence curve of GSA and PSO algorithm for test intersection}
 
 % Tabela 4 
 \begin{table*}
