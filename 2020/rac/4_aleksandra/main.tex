@@ -12,7 +12,7 @@ Aleksa Tešić, student Matematičkog fakulteta u Beogradu
 Razvijene su metode za optimizaciju svetlosnih signala na izolovanoj raskrsnici u fiksnom režimu rada. Metode su bazirane na heurističkim algoritmima: gravitacioni pretraživački algoritam (GSA) i optimizacija rojem čestica (PSO). Navedeni algoritmi su poređeni sa referentnim algoritmom kolonije pčela (BCO) iz literature. Data je formulacija problema optimizacije, kao i opis korišćenih algoritama. Oba algoritma su implementirana u razvojnom okruženju Visual Studio Code u programskom jeziku Python. Optimizacija je izvršena na osnovu proračuna fitness funkcije koja minimizuje prosečne vremenske gubitke svih vozila u raskrsnici, pri odgovarajućim ograničenjima. Metode su testirane na hipotetičkim primerima iz literature i na primeru realne raskrsnice. Urađena je analiza konvergencije GSA i PSO algoritama. Dobijeni rezultati pokazuju da je PSO, u poređenju sa algoritmom kolonije pčela (BCO) iz literature, uspeo da nađe iste ili bolje signalne planove za skoro sve test primere. Poređenjem primenjenih metoda, pokazalo se da je GSA dao lošije rezultate od algoritma PSO i BCO. Ipak, u poslednjem test primeru GSA je uspeo da nađe bolji signalni plan od postojećeg signalnog plana raskrsnice.
 \end{Abstract}
 \begin{AbstractEng}
-Signal timing optimization is an important measure to reduce traffic congestion, exhaust gas emissions and improve traffic safety. This paper presents application of gravitational search algorithm (GSA) and particle swarm optimization (PSO) to solve the traffic signal timing optimization problem for isolated intersections. GSA is one of the recent nature inspired optimization algorithms. In GSA, each mass presents a solution. These masses (agents) obey the Newtonian's law of gravity and the law of motion, so they attract each other by the gravity force. This force causes a global movement of all objects towards the objects with heavier masses. By lapse of time, we expect that masses will be attracted by the heaviest mass, which will present an optimum solution in the search space. PSO is a population-based stochastic optimization algorithm motivated by intelligent behavior of some individuals within a group, such as flock of birds. This algorithm solves a problem by having a population (swarm) of candidate solutions or particles, and moving these particles around in the search space according to simple mathematical formulas over the particle's position and velocity. Proposed heuristic algorithms were developed to optimize the control parameters (cycle length and the distribution of green time on the phases) in two cases: undersaturated and oversaturated flows at the intersection. Intersection control is in the "fixed time" mode, where traffic flows are served by being divided into a number of phases. The fitness function of this model is used to minimize the total average control delay of all vehicles that pass an intersection at a certain period, with constraint. The method was developed in Visual Studio Code IDE, using the Python programming language. The testing has been done on three hypothetical examples with different saturation of traffic flows (Figure 2, 3 and 4). Also, the model is tested on a real intersection in Belgrade (Figure 5). An analysis of the convergence of GSA and PSO algorithms was performed. It was shown that the GSA and PSO converge to good solutions in the first few iterations. Simulation results for hypothetical examples showed that the PSO algorithm provides almost the same solution compared to the bee colony optimization algorithm (BCO) from the literature. The GSA algorithm gave worse results than PSO (table 1, 2.1, 2.2 and 3). The fitness values i.e. the total average control delays of all vehicles obtained by PSO are 189.78 s/vehicle (the first period of analysis) and 369.12 s/vehicle (the second period of analysis). The solutions obtained by PSO (table 4), give less value of fitness function compared to those that come from the BCO and GSA algorithms, for a real test intersection. Also, in the last test example, the GSA algorithm found a better signal plan than the signal plan according to the existing condition. 
+Signal timing optimization is an important measure to reduce traffic congestion, exhaust gas emissions and improve traffic safety. This paper presents application of gravitational search algorithm (GSA) and particle swarm optimization (PSO) to solve the traffic signal timing optimization problem for isolated intersections. GSA is one of the recent nature inspired optimization algorithms. In GSA, each mass presents a solution. These masses (agents) obey the Newtonian's law of gravity and the law of motion, so they attract each other by the gravity force. This force causes a global movement of all objects towards the objects with heavier masses. By lapse of time, we expect that masses will be attracted by the heaviest mass, which will present an optimum solution in the search space. PSO is a population-based stochastic optimization algorithm motivated by intelligent behavior of some individuals within a group, such as flock of birds. This algorithm solves a problem by having a population (swarm) of candidate solutions or particles, and moving these particles around in the search space according to simple mathematical formulas over the particle's position and velocity. Proposed heuristic algorithms were developed to optimize the control parameters (cycle length and the distribution of green time on the phases) in two cases: undersaturated and oversaturated flows at the intersection. Intersection control is in the "fixed time" mode, where traffic flows are served by being divided into a number of phases. The fitness function of this model is used to minimize the total average control delay of all vehicles that pass an intersection at a certain period, with constraint. The method was developed in Visual Studio Code IDE, using the Python programming language. The testing has been done on three hypothetical examples with different saturation of traffic flows (Figure 2, 3 and 4). Also, the model is tested on a real intersection in Belgrade (Figure 5). An analysis of the convergence of GSA and PSO algorithms was performed. It was shown that the GSA and PSO converge to good solutions in the first few iterations. Simulation results for hypothetical examples showed that the PSO algorithm provides almost the same solution compared to the bee colony optimization algorithm (BCO) from the literature. The GSA algorithm gave worse results than PSO (table 1, 2, 3 and 4). The fitness values i.e. the total average control delays of all vehicles obtained by PSO are 189.78 s/vehicle (the first period of analysis) and 369.12 s/vehicle (the second period of analysis). The solutions obtained by PSO (table 4), give less value of fitness function compared to those that come from the BCO and GSA algorithms, for a real test intersection. Also, in the last test example, the GSA algorithm found a better signal plan than the signal plan according to the existing condition. 
 \end{AbstractEng}
 \StartDoublePaper
 \label{rac.aleksandra}
@@ -291,8 +291,7 @@ Rezultati za prvi test scenario su prikazani u tabeli 1. Dati su podaci o vredno
 
 % Tabela 1 
 
-\begin{table*}
-    \begin{center}
+\TableDouble{
       \begin{tabular}{p{0.12\linewidth}p{0.12\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}}
         \hline 
         \multicolumn{3}{c}{Broj faza} & 2 & 3 & 4 & 5 & 6 \\ 
@@ -332,12 +331,10 @@ Rezultati za prvi test scenario su prikazani u tabeli 1. Dati su podaci o vredno
   
         \hline
       \end{tabular}
-    \end{center}
-  \end{table*}
-  
+}{Upoređivanje metoda za test scenario 1}{Comparison of methods for test scenario 1}
+
 Drugi test scenario ima dva perioda analize koji je napravljen tako da su saobraćajni tokovi raskrsnica prezasićeni. S obzirom na to, javljaju se redovi neopsluženih vozila koji su prikazani u vrsti $Q_b / Q_{b+1}$ u tabeli 2. i 3. Pretpostavljeno je da pre prvog perioda ($b=1$) na raskrsnici nema neopsluženih vozila, odnosno da je $Q_b = 0$ za sve trake na raskrsnici. Poređenjem ovih metoda, pokazalo se da PSO i GSA algoritam generišu ista rešenja za sve razmatrane slučajeve u prvom i drugom periodu analize. U prvom periodu analize, GSA je uspeo da nađe optimalna rešenja za raskrsnicu sa 2 i 4 faze, dok je u drugom periodu analize uspeo da nađe samo optimalno rešenje u slučaju raskrsnice sa dve faze. U ostalim slučajevima, vrednosti funkcije cilja koje su dobijene primenom GSA su manje u poređenju sa vrednostima dobijenim PSO i BCO metodama, što je prikazano u tabelama 2. i 3. 
 
-% TODO: tabela 2.1, slike 7.1, 7.2, tabela 2.2, slike 8.1, 8.2
 \Figure{plot_3.pdf}{Konvergencija GSA algoritma za test scenario 2. Period analize $b=1$}{Convergence curve of GSA algorithm for test scenario 2. Period analysis $b=1$}
 
 \Figure{plot_4.pdf}{Konvergencija PSO algoritma za test scenario 2. Period analize $b=1$}{Convergence curve of PSO algorithm for test scenario 2. Period analysis $b=1$}
@@ -350,8 +347,7 @@ Drugi test scenario ima dva perioda analize koji je napravljen tako da su saobra
 
 % Tabela 2.1
 
-\begin{table*}
-    \begin{center}
+\TableDouble{
       \begin{tabular}{p{0.12\linewidth}p{0.12\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}}
         \hline 
         \multicolumn{3}{c}{Broj faza} & 2 & 3 & 4 & 5 & 6 \\ 
@@ -394,14 +390,11 @@ Drugi test scenario ima dva perioda analize koji je napravljen tako da su saobra
         & 0 / 518 & 0 / 720 & 0 / 640 & 0 / 1264 & 0 / 2016  \\
         \hline
       \end{tabular}
-    \end{center}
-  \end{table*}
+}{Upoređivanje metoda za test scenario 2. Period analize $b=1$}{Comparison of methods for test scenario 2. Period analysis $b=1$}
   
+% Tabela 2.2
   
-  % Tabela 2.2
-  
-  \begin{table*}
-    \begin{center}
+\TableDouble{
       \begin{tabular}{p{0.12\linewidth}p{0.12\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}}
         \hline 
         \multicolumn{3}{c}{Broj faza} & 2 & 3 & 4 & 5 & 6 \\ 
@@ -444,12 +437,9 @@ Drugi test scenario ima dva perioda analize koji je napravljen tako da su saobra
         & 518 / 0 & 720 / 94 & 640 / 79  & 1264 / 1025 &  2016 / 2448 \\
         \hline
       \end{tabular}
-    \end{center}
-  \end{table*}
-  
+}{Upoređivanje metoda za test scenario 2. Period analize $b=2$}{Comparison of methods for test scenario 2. Period analysis $b=2$}
 Rezultati za treći test scenario su prikazani u tabeli 3. Ovaj scenario predstavlja najzahtevniji slučaj za upravljanje iz razloga što se u većem broju traka javljaju stanja prezasićenosti (Jovanović 2018). Kao i u drugom scenariju, i ovde je dat prikaz neopsluženih tokova na kraju jednog perioda analize. S obzirom na to da se podaci za prvi period analize $b=1$ drugog scenarija poklapaju sa prvim periodom analize $b=1$ trećeg scenarija, prikazani su samo rezultati drugog perioda analize. PSO je uspeo da nađe rešenja koja su jednaka rešenjima BCO algoritma. Ova rešenja su bolja od rešenja koja su dobijena primenom GSA algoritma. 
 
-% TODO: tabela 3, slike 9.1, 9.2
 
 
 \Figure{plot_7.pdf}{Konvergencija GSA algoritma za test scenario 3. Period analize $b=2$}{Convergence curve of GSA algorithm for test scenario 3. Period analysis $b=2$}
@@ -459,8 +449,7 @@ Rezultati za treći test scenario su prikazani u tabeli 3. Ovaj scenario predsta
 
 
 
-\begin{table*}
-    \begin{center}
+\TableDouble{
       \begin{tabular}{p{0.12\linewidth}p{0.12\linewidth}p{0.1\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}p{0.08\linewidth}}
         \hline 
         \multicolumn{3}{c}{Broj faza} & 2 & 3 & 4 & 5 & 6 \\ 
@@ -503,10 +492,7 @@ Rezultati za treći test scenario su prikazani u tabeli 3. Ovaj scenario predsta
         & 518 / 1749 & 720 / 2186 & 640 / 2163 & 1264 / 3440 & 2016 / 4956 \\
       \hline
       \end{tabular}
-    \end{center}
-  \end{table*}
-  
-  
+}{Upoređivanje metoda za test scenario 3. Period analize $b=2$}{Comparison of methods for test scenario 3. Period analysis $b=2$}
   
 S obzirom na to da su u prvom, drugom i trećem test primeru razmatrane raskrsnice kojima se upravlja sa 2, 3, 4, 5 i 6 faza, na slikama su prikazane konvergencije algoritama za svaku raskrsnicu sa navedenim brojem faza. Grafik pokazuje da algoritmi brže konvergiraju kada se raskrsnicom upravlja sa manjim brojem faza, jer opada kombinatorna složenost problema.
 
@@ -515,13 +501,11 @@ S obzirom na to da su u prvom, drugom i trećem test primeru razmatrane raskrsni
 Na slici 12 i 13 prikazani su signalni planovi dobijeni GSA i PSO algoritmima. Signalni plan prikazuje ukupno vreme trajanja ciklusa $C$ koji je podeljen na pet faza. Trajanje faza u sekundama je takođe označeno brojevima na slici. Svakoj fazi su dodeljeni određeni pravci kretanja označeni slovima abecede. U poređenju sa signalnim planom prema postojećem stanju (slika 11), GSA i PSO su uspeli da nađu bolje signalne planove. Prosečni vremenski gubici i broj neopsluženih vozila, koji su dobijeni tokom optimizacije, manji su u odnosu postojeće stanje. Komparacijom navedenih heurističkih metoda, zaključuje se da je GSA algoritam dao lošije rezultate, kao i u ostalim test primerima. Pokazalo se da su rezultati PSO algoritma bolji u odnosu na rezultate koji su dobijeni u radu (Jovanović 2018) BCO algoritmom, za prvi period analize.  
 U drugom periodu analize ($b=2$) prema postojećem stanju, prosečni vremenski gubici vozila iznose: 557.41 s/voz. Prosečni vremenski gubici za signalne planove, koji su generisani GSA, PSO i BCO algoritmima, za prvi period analize iznose: 400.21, 369.12, 390.27, respektivno. Najmanje vrednosti prosečnih vremenskih gubitaka i broja neopsluženih tokova su dostignute PSO algoritmom, za oba perioda analize. Na osnovu rezultata koji su prikazani u tabeli 4, zaključuje se da je PSO algoritam dao najbolji signalni plan test raskrsnice, u poređenju sa GSA i BCO algoritmom (slika 14) i postojećim stanjem.
 
-% TODO: Tabela 4, slika 10
 
 \Figure{plot_9.pdf}{Konvergencija GSA i PSO algoritma za test raskrsnicu}{Convergence curve of GSA and PSO algorithm for test intersection}
 
 % Tabela 4 
-\begin{table*}
-    \begin{center}
+\TableDouble{
       \begin{tabular}{p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}p{0.1\linewidth}}
         \toprule
         $ T = 1h $ & \multicolumn{2}{c}{\textbf{Postojeće stanje}}
@@ -564,9 +548,8 @@ U drugom periodu analize ($b=2$) prema postojećem stanju, prosečni vremenski g
   
         
       \end{tabular}
-    \end{center}
-  \end{table*}
-  
+}{Upoređivanje metoda za test raskrsnicu}{Comparison of methods for test intersection}
+
 Na slici 10 je prikazana konvergencija GSA i PSO algoritama za poslednji test primer. Primećuje se da korišćeni algoritmi značajno poboljšavaju inicijalna rešenja do 5. iteracije, nakon koje su naredna poboljšanja rešenja veoma mala.
 
 % TODO: Slika 11, 12, 13, 14
