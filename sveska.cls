@@ -5,7 +5,7 @@
 
 \RequirePackage{fontspec}
 \RequirePackage{color}
-
+\RequirePackage{pdfpages}
 
 \RequirePackage[
     b5paper,
