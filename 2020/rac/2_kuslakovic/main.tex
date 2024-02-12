@@ -1,8 +1,8 @@
 \Title{Poređenje efikasnosti simuliranja epidemije na centralnoj procesorskoj jedinici i grafičkoj procesorskoj jedinici}
-\TitleEng{Comparison of epidemic simulation efficiency on a central processing unit and a graphic processing unit}
+\TitleEng{Comparison of epidemic simulation efficiency on a central processing unit and a graphics processing unit}
 \Author{Nikola Kušlaković}
 \begin{Abstract}
-Ispitivan je model epidemije koji koristi metod zasnovan na agentima, baziran na SIR modelu, jednom od osnovnih epidemioloških modela. Analiziran je način na koji simulacija ovog modela može da se modifikuje, tako da se pored izvršavanja na procesoru, ona izvršava i na grafičkoj kartici. Model je koristio 15 parametara koji su mogli da se menjaju, a testiran je tako da se vidi kakve sve tipove epidemije može da simulira. Simulacije sa malim brojem agenata su se nešto brže izvršavale na procesoru, a simulacije sa izuzetno puno agenata znatno brže su se izvršavale na grafičkoj kartici. Pored toga, kada su simulacije koje su izvršavane na grafičkoj kartici koristile atomične funkcije, izvršavala su se znatno brže od simulacija koje nisu koristile te funkcije. Povećanjem broja agenata, razlika u predviđanjima simulacija sve manje zavisi od računarske komponente na kojoj se one izvršavaju. 
+Ispitivan je model epidemije koji koristi metod zasnovan na agentima, baziran na SIR modelu, jednom od osnovnih epidemioloških modela. Analiziran je način na koji simulacija ovog modela može da se modifikuje, tako da se pored izvršavanja na procesoru, ona izvršava i na grafičkoj kartici. Model je koristio 15 parametara koji su mogli da se menjaju, a testiran je tako da se vidi kakve sve tipove epidemije može da simulira. Simulacije sa malim brojem agenata su se nešto brže izvršavale na procesoru, a simulacije sa izuzetno puno agenata znatno brže su se izvršavale na grafičkoj kartici. Pored toga, kada su simulacije koje su izvršavane na grafičkoj kartici koristile atomične funkcije, izvršavala su se znatno brže od simulacija koje nisu koristile te funkcije. Povećanjem broja agenata, razlika u predviđanjima simulacija sve manje zavisi od računarske komponente na kojoj se one izvršavaju.
 
 \end{Abstract}
 \begin{AuthorEx}
@@ -26,7 +26,7 @@ Epidemija je prirodna pojava kod koje dolazi do širenja neke bolesti ili zaraze
 
 Predviđanje toka epidemije predstavlja ključni elemenat za njeno zaustavljanje. Koliko će predviđanje biti dobro, zavisi od same simulacije, odnosno od modela koji se koristi. Dva najčešća načina za simuliranje epidemija su: metoda zasnovana na agentima i metoda zasnovana na populaciji (Jaffry i Treur 2008). Kod metode zasnovane na agentima, svaka osoba (agent) unutar populacije se tretira kao nezavisna jedinka, dok kod metode zasnovane na populaciji, cela populacija je podeljena na grupe koje se jasno izdvajaju, i prate se interakcije između tih grupa. Većina epidemioloških simulacija se zasniva na \emph{SIR} modelu (Kermack i McKendrick 1927). Ovo je jednostavan matematički model koji povezuje tri skupa: skup podložnih (S -- susceptible), skup zaraženih (I -- infected) i skup oporavljenih (R -- recovered) jedinki. Postoji i modifikovan oblik ovog modela, koji uključuje i skup preminulih. Model funkcioniše tako što osobe kada se zaraze, oporave, izgube imunitet ili umru, prelaze iz jednog skupa u drugi.
 
-Pored modela i načina simuliranja epidemije, bitno je i na kojoj računarskoj komponenti se vrši simuliranje. Centralna procesorska jedinica (CPU) i grafička procesorska jedinica (GPU) su dva uređaja na kojima je moguće vršiti simuliranje. Ova dva uređaja se najvećim delom razlikuju po svojoj arhitekturi, što znači da na različite načine obrađuju podatke. Konkretno, procesor bolje obrađuje podatke redno (sekvencijalno), dok grafička kartica bolje radi sa podacima koji mogu paralelno da se obrađuju. 
+Pored modela i načina simuliranja epidemije, bitno je i na kojoj računarskoj komponenti se vrši simuliranje. Centralna procesorska jedinica (CPU) i grafička procesorska jedinica (GPU) su dva uređaja na kojima je moguće vršiti simuliranje. Ova dva uređaja se najvećim delom razlikuju po svojoj arhitekturi, što znači da na različite načine obrađuju podatke. Konkretno, procesor bolje obrađuje podatke redno (sekvencijalno), dok grafička kartica bolje radi sa podacima koji mogu paralelno da se obrađuju.
 
 U nekim ranijm radovima (Shekh et al. 2015), koristi se metoda zasnovana na agentima i jednostavan oblik \emph{SIR} modela (Kovac et al. 2018). U tim radovima se ne porede rezultati predviđanja simulacija koje su izvršavale na dve različite računarske komponente, već se samo porede brzine izvršavanja. Korišćeni su i sistemi sa više udruženih grafičkih i procesorskih jednica (Aaby et al. 2010; Zou et al. 2013).
 
@@ -42,7 +42,7 @@ Pre početka same simulacije potrebno je izgenerisati sve agente i dodeliti im l
 
 Jedan dan u simulaciji se odvija tako što bi ujutru svi agenti odlazili na posao i tamo provodili određeni vremenski period. Po završetku radnog vremena, disciplinovani agenti se odmah vraćaju kući, dok bi agenti koji se ne čuvaju zaraze odlazili na dve popularne lokacije i tamo provodili određeni vremenski period, i tek posle toga bi se vraćali svojim kućama gde bi ostajali do sledećeg jutra.
 
-Agent se može zaraziti tako što na nekoj od lokacija ostvari interakciju sa drugim agentom koji je već zaražen. Verovatnoća da se agent zarazi je jedan od parametara sumilacije. Bitno je napomenuti da agent može imati interakciju sa samim sobom, čime se modeluju slučajevi kada neko na nekoj lokaciji provodi vreme sam. Takođe, agent može više puta sa istim agentom da stupi u interakciju. Na kraju svakog dana agent koji je zaražen ima izvesnu verovatnoću da umre. Nakon izvesnog vremena, agenti koji su zaraženi a nisu umrli, postaju imuni, a taj imunitet je vremenski ograničen, odnosno traje samo određeni vremenski period, tokom kojeg ne mogu da se zaraze, niti da zaraze druge agente. Kada mu prestane imunitet, agent postaje ponovo podložan zarazi. Na ovaj način agenti prelaze iz jednog skupa u drugi, a u slučaju da umru, više ne učestvuju ni u kakvim interakcijama sa drugim agentima. 
+Agent se može zaraziti tako što na nekoj od lokacija ostvari interakciju sa drugim agentom koji je već zaražen. Verovatnoća da se agent zarazi je jedan od parametara sumilacije. Bitno je napomenuti da agent može imati interakciju sa samim sobom, čime se modeluju slučajevi kada neko na nekoj lokaciji provodi vreme sam. Takođe, agent može više puta sa istim agentom da stupi u interakciju. Na kraju svakog dana agent koji je zaražen ima izvesnu verovatnoću da umre. Nakon izvesnog vremena, agenti koji su zaraženi a nisu umrli, postaju imuni, a taj imunitet je vremenski ograničen, odnosno traje samo određeni vremenski period, tokom kojeg ne mogu da se zaraze, niti da zaraze druge agente. Kada mu prestane imunitet, agent postaje ponovo podložan zarazi. Na ovaj način agenti prelaze iz jednog skupa u drugi, a u slučaju da umru, više ne učestvuju ni u kakvim interakcijama sa drugim agentima.
 
 \begin{algorithm*}[ht]
 \caption[Algoritam]{Preudokod simulacije}\label{alg:cap}
@@ -106,11 +106,13 @@ Simulaciju je moguće podešavati kroz 15 parametara, pri čemu je važno kako �
 
 \subsection{Simulacija na centralnoj procesorskoj jedinici}
 
-Algoritam simluacije nije morao da se prilagođava da bi se simulacija izvršavala na procesoru. Ceo program se prevodio u mašinski kod i predavao procesoru na izvršavanje; procesor je alocirao delove radne memorije (RAM) kako bi se privremeno čuvali podaci simulacije, a rezultati i neki bitni podaci o simulaciji beleženi su u trajnu memoriju, u tekstualni fajl. Svaka komanda na procesoru se izvršavala redno (sekvencijalno) i isključivo jedno procesorsko jezgro je bilo u upotrebi. 
+Algoritam simluacije nije morao da se prilagođava da bi se simulacija izvršavala na procesoru. Ceo program se prevodio u mašinski kod i predavao procesoru na izvršavanje; procesor je alocirao delove radne memorije (RAM) kako bi se privremeno čuvali podaci simulacije, a rezultati i neki bitni podaci o simulaciji beleženi su u trajnu memoriju, u tekstualni fajl. Svaka komanda na procesoru se izvršavala redno (sekvencijalno) i isključivo jedno procesorsko jezgro je bilo u upotrebi.
 
-Bitno je napomenuti da je za većinu delova simulacije bilo potrebno izgenerisati određene slučajne brojeve. Konkretno, ako uzmemo jednog agenta i želimo da mu nađemo drugog agenta sa iste lokacije sa kojim će imati interakciju, to ćemo da uradimo tako što ćemo nasumično izabrati nekog agenta iz skupa svih agenata sa te lokacije. Korišćenjem slučajnih vrednosti, možemo približno da oponašamo situacije koje se događaju u stvarnosti. 
+Bitno je napomenuti da je za većinu delova simulacije bilo potrebno izgenerisati određene slučajne brojeve. Konkretno, ako uzmemo jednog agenta i želimo da mu nađemo drugog agenta sa iste lokacije sa kojim će imati interakciju, to ćemo da uradimo tako što ćemo nasumično izabrati nekog agenta iz skupa svih agenata sa te lokacije. Korišćenjem slučajnih vrednosti, možemo približno da oponašamo situacije koje se događaju u stvarnosti.
 
 Pošto računari ne mogu da izgenerišu „prave” slučajne brojeve, koristiti se generator pseudoslučajnih brojeva. Za realizaciju ovog projekta korišćen je Mersenne Twister pseudogenerator (Matsumoto i Nishimura 1998), pošto je jedan od najkorišćenijih i najpouzdanijih. Pseudogenerator se inicijalizuje na osnovu jedinstvene vrednosti koja predstavlja seme generatora (seed). U svim simulacijama izvršenim na procesoru bilo je korišćeno isto seme, zato što je korišćen samo jedan generator objekat.
+
+Algoritam simulacije koji se izvršavao na procesoru bio je napisan u programskom jeziku C++, gde je za sve pomoćne strukture podataka bila korišćena standardna biblioteka ovog jezika.
 
 \subsection{Simulacija na grafičkoj procesorskoj jedinici}
 
@@ -140,9 +142,13 @@ Simulacija na grafičkoj kartici tekla je na sledeći način:
     \item Prepisivanje rezultata i podataka o simulaciji iz globalne memorije grafičke kartice u radnu memoriju sistema
 \end{enumerate}
 
-Bitno je napomenuti da je najsporiji deo simulacija bio pripremna faza, odnosno deo gde se generišu agenti i pseudogenerator objekti i dalje šalju u memoriju grafičke kartice. Prepisivanje iz globalne memorije u radnu memoriju je izuzetno sporo, zato je najbolje bilo poslati sve podatke odjednom. 
+Bitno je napomenuti da je najsporiji deo simulacija bio pripremna faza, odnosno deo gde se generišu agenti i pseudogenerator objekti i dalje šalju u memoriju grafičke kartice. Prepisivanje iz globalne memorije u radnu memoriju je izuzetno sporo, zato je najbolje bilo poslati sve podatke odjednom.
+
+Za pisanje programa, koji se većim delom izvršavao na grafičkoj kartici, bio je korišćen programski okvir OpenCL. Program zadužen za inicijalizaciju, slanje podataka i merenja se izvršavao na procesoru, dok su se jezgra (kerneli) izvršavala na grafičkoj kartici i bila su pisana u programskom jeziku baziranom na modifikaciji C99 standarda.
 
 \section{Rezultati i diskusija}
+
+Svi rezultati navedeni u ovom radu su dobijeni korišćenjem procesora AMD FX-8300 i grafičke kartice AMD R7 360.
 
 \subsection{Analiza modela}
 
@@ -151,7 +157,7 @@ Prvo je testiran sam model, kako bi se proverilo da li simulacija daje podatke k
 \begin{itemize}
     \item Zaraza koja ima visoku smrtnost. Tada epidemija posle nekoliko dana brzo prestaje da se širi, jer zaraženi prebrzo umiru, pa ne dolazi do širenja zaraze.
     \item Zaraza kod koje je visoka stopa prenošenja i mala stopa smrtnosti, a agenti se brzo oporavljaju i imaju dugačak imuni period. Tada posle određenog vremenskog perioda dolazi do naglog rasta zaraženih i onda do naglog pada broja zaraženih (pik epidemije). Epidemija nakon određenog perioda prestaje da se širi, i potpuno nestaje iz populacije.
-    \item Zaraza koja se nikada neće istrebiti iz populacije. Ovde je takođe visoka stopa prenošenja zaraze i mala stopa smrtnosti, ali je zato dugačak period zaraženosti agenta i imunitet je kraći. Ovde takođe dolazi do naglog rasta i pada broja novozaraženih, ali se posle određenog perioda zaraza ne gubi iz populacije već je svaki dan približno konstantan broj novozaraženih. 
+    \item Zaraza koja se nikada neće istrebiti iz populacije. Ovde je takođe visoka stopa prenošenja zaraze i mala stopa smrtnosti, ali je zato dugačak period zaraženosti agenta i imunitet je kraći. Ovde takođe dolazi do naglog rasta i pada broja novozaraženih, ali se posle određenog perioda zaraza ne gubi iz populacije već je svaki dan približno konstantan broj novozaraženih.
     \item Imamo više grupa unutar populacije i te grupe su međusobno izolovane, odnosno agenti iz jedne grupe ne ostvaruju interakcije sa agentima iz druge grupe. Ako se zaraze samo agenti iz jedne grupe, druge grupe se neće zaraziti, jer nema mešanja grupa.
 \end{itemize}
 
@@ -200,7 +206,7 @@ Vidimo da su simulacije koje nisu koristile atomične funckije izuzetno spore u 
 
 \section{Zaključak}
 
-Iako jednostavna, razvijena verzija simulacije bazirana na \emph{SIR} modelu epidemije i agentskom pristupu, pokazala se zadovoljavajućom. Izborom odgovarajućih vrednosti za 15 parametara modela, moguće je simulirati različite vrste i oblike epidemija. Razlike u predikcijama, dobijene od simulacija koje su se izvršavale sa identičnim parametrima na grafičkoj kartici i procesoru, su male kada je broj agenata veći od 50 hiljada. Simulacije sa izuzetno mnogo agenata (preko 250 hiljada) se znatno brže izvršavaju na grafičkoj kartici nego na procesoru. Što se tiče vremena izvršavanja simulacija sa malim brojem agenata (manje od 60 hiljada), one će se brže izvršavati na procesoru nego na grafičkoj kartici, ali razlika u vremenu izvršavanja nije velika. Na osnovu ovoga zaključujemo da ako hoćemo da simuliramo epidemiju, možemo koristiti model predstavljen u ovom radu i najbolje je da simulaciju koja ima puno agenata i puno interakcija izvršavamo na grafičkoj kartici, i da se tada koriste atomične funkcije. 
+Iako jednostavna, razvijena verzija simulacije bazirana na \emph{SIR} modelu epidemije i agentskom pristupu, pokazala se zadovoljavajućom. Izborom odgovarajućih vrednosti za 15 parametara modela, moguće je simulirati različite vrste i oblike epidemija. Razlike u predikcijama, dobijene od simulacija koje su se izvršavale sa identičnim parametrima na grafičkoj kartici i procesoru, su male kada je broj agenata veći od 50 hiljada. Simulacije sa izuzetno mnogo agenata (preko 250 hiljada) se znatno brže izvršavaju na grafičkoj kartici nego na procesoru. Što se tiče vremena izvršavanja simulacija sa malim brojem agenata (manje od 60 hiljada), one će se brže izvršavati na procesoru nego na grafičkoj kartici, ali razlika u vremenu izvršavanja nije velika. Na osnovu ovoga zaključujemo da ako hoćemo da simuliramo epidemiju, možemo koristiti model predstavljen u ovom radu i najbolje je da simulaciju koja ima puno agenata i puno interakcija izvršavamo na grafičkoj kartici, i da se tada koriste atomične funkcije.
 
 \section{Literatura}
 
@@ -218,7 +224,7 @@ Iako jednostavna, razvijena verzija simulacije bazirana na \emph{SIR} modelu epi
 }
 \Source{%
     Jaffry S. W., Treur J. 2008.
-    Agent-based and popula-tion-based simulation: A comparative case study for epidemics.
+    Agent-based and population-based simulation: A comparative case study for epidemics.
     U \textit{Proceedings of the 22nd European Conference on Modelling and Simulation}.
     ECMS (The European Council for Modelling and Simulation), str. 1-10.
 }
@@ -227,13 +233,6 @@ Iako jednostavna, razvijena verzija simulacije bazirana na \emph{SIR} modelu epi
     A contribution to the mathematical theory of epidemics.
     U \textit{Proceedings of the royal society of london}. Series A.
     \textbf{115} (772): 700-21.
-}
-\Source{%
-    Aaby B. G., Perumalla K. S., Seal S. K. 2010.
-    Efficient simulation of agent-based models on multi-GPU and multi-core clusters.
-    U \textit{Proceedings of the 3rd international icst conference on simulation tools and techniques}
-    (ur. F. Perrone i G. Stea).
-    Brisel: ICST (Institute for Computer Sciences, Social-Informatics and Telecommunications Engineering), str. 1-10.
 }
 \Source{%
     Kovac T., Haber T., Van Reeth F., Hens N. 2018.

@@ -509,4 +509,6 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
+\setlocalecaption{serbian}{table}{Tabela}
+
 \sloppy

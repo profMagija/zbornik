@@ -222,6 +222,15 @@ Kako bi se utvrdila uspešnost modela u predviđanju, nezavisno od skupa podatak
 
 Dobijeni rezultati pokazuju da upotreba tvitova objavljenih tokom jedne nedelje pred dan izbora daje bolje rezultate nego upotreba tvitova objavljenih tokom jednog meseca pred dan izbora, što se najbolje vidi na primeru predsedničkih izbora 2016. u Sjedinjenim Američkim Državama (slika 10). Poređenje rezultata modela 1 i 2 sa rezultatima modela 3 i 4 pokazuje da sentiment tvitova nema značajan uticaj na krajnje rezultate osim u slučaju parlamentarnih izbora 2017. u Velikoj Britaniji, gde je jedino model 1 tačno predvideo pobednika (slika 8). Najveći nedostatak ovih modela primećuje se na parlamentarnim izborima jer su previše naklonjeni kandidatima koji su zapravo osvojili vrlo mali deo glasova (slika 5, 6, 7, i 8). Najbolji rezultat je postigao model 4 za koji prosečni koeficijent korelacije između predviđenih i ostvarenih rezultata iznosi 0.86 (slika 9), a prosečni koren srednjeg kvadratnog odstupanja između predviđenih i ostvarenih rezultata 0.07 (slika 10). 
 
+
+\Figure{plot_9.pdf}
+    {Koeficijent korelacije između predviđenih i ostvarenih rezultata.}
+    {Correlation coefficient between predicted and actual results.}
+
+\Figure{plot_10.pdf}
+    {RMSE između predviđenih i ostvarenih rezultata.}
+    {RMSE between predicted and actual results.}
+
 \section{Zaključak}
 
 Ovaj rad je pokazao da kombinacija ovih modela i podataka sa Tvitera ne može da vrši pouzdano predviđanje rezultata izbora. Uprkos tome, predloženi modeli su postigli zadovoljavajuće rezultate u poređenju sa modelima linearne regresije iz referentnog rada (Zolghadr et al. 2018) i mogli bi dalje biti poboljšani primenom karakteristika nevezanih za Tviter poput biografskih podataka o kandidatima i političkih i ekonomskih varijabli koje mogu imati uticaj na glasače. Takođe, u narednim radovima treba razviti posebne modele za predsedničke i parlamentarne izbore zbog njihove različite prirode. Upotreba linearne regresije je pokazala dobre rezultate za predsedničke izbore, dok bi za parlamentarne bolje bilo primeniti eksponencijalnu regresiju zbog velike razlike u udelu osvojenih glasova među kandidatima, koju je nemoguće linearno modelovati sa velikom preciznošću.
