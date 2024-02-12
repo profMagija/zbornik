@@ -1,3 +1,19 @@
+## Instalacija 
+
+Potrebno je instalirati sledece pakete:
+
+    texlive
+    gnuplot 
+    latexmk 
+    texlive-xetex
+    texlive-science  
+    fonts-freefont-ttf
+    ttf-times-new-roman 
+    ttf-mscorefonts-installer
+    texlive-latex-extra 
+    texlive-lang-cyrillic 
+
+
 ## Komande
 
 Komende koje zapocinju delove sveske. Ove komande iskljucivo uticu na podnozje stranice.

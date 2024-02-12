@@ -5,7 +5,7 @@
 
 \RequirePackage{fontspec}
 \RequirePackage{color}
-
+\RequirePackage{pdfpages}
 
 \RequirePackage[
     b5paper,
@@ -35,8 +35,8 @@
 \RequirePackage{amsmath}
 \RequirePackage{import}
 \RequirePackage{multirow}
-\RequirePackage{makecell}
-
+\RequirePackage{amsthm}
+\RequirePackage{booktabs,multicol, multirow,boldline,makecell}
 \RequirePackage[absolute,overlay]{textpos}
 
 \RequirePackage[serbian, english]{babel}
@@ -335,6 +335,12 @@
     \setcounter{equation}{0}
     \setcounter{figure}{0}
     \setcounter{table}{0}
+    \setcounter{Theorem}{0}
+    \setcounter{Example}{0}
+    \setcounter{Proposition}{0}
+    \setcounter{Corollary}{0}
+    \setcounter{Definition}{0}
+
 }
 
 \newcommand{\StartPaper}{
@@ -477,6 +483,19 @@
 \DeclareBiCaptionSeparator{hrule}{\vspace{-1ex}\noindent\rule{36mm}{0.075mm}\\}
 \captionsetup{bi-separator=hrule,justification=raggedright,singlelinecheck=false,labelsep=period}
 
+%%%%%%%%%%%%%% Mathematics 
+
+\newtheorem{Theorem}{Teorema}
+\newtheorem{Corollary}{Posledica}
+\newtheorem{Definition}{Definicija}
+\newtheorem{Proposition}{Tvrđenje}
+\newtheorem{Example}{Primer}
+\newtheorem{Lemma}{Lema}
+\newenvironment{Proof}{
+  \begin{proof}
+}{
+  \end{proof}
+}
 %%%%%%%%%%%%%%%%%% no numberings
 
 \setcounter{secnumdepth}{0}

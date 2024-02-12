@@ -124,7 +124,7 @@ Na slici 1 dat je šematski prikaz grafičke procesorske jedinice. Konkretno, u 
 
 \Figure{figure_1.jpg}
     {Šematski prikaz grafičke procesorske jedinice.}
-    {chematic representation of a graphics processing unit.}
+    {Chematic representation of a graphics processing unit.}
 
 Prilikom adaptiranja simulacije za grafičku karticu najpre su generisani slučajni brojevi, za šta je, takođe, korišćen pseudogenerator Mersenne Twister. Pošto radne stavke ne smeju da koriste isti generator objekat, svaka od njih je morala da ima svoj generator koji je drugačije inicijalizovan, što znači da je svaki generator generisao drugačiji niz pseudoslučajnih brojeva. Na ovaj način ne dolazi do narušavanja konzistentnosti resursa, odnosno ne može se desiti da više radnih stavki upisuje podatke u istu memorijsku adresu (Feautrier 2011), te se na taj način ne remeti tok simulacije. Još jedan od načina rešavanja ovog problema, koji je takođe razmatran, jeste da se slučajni brojevi generišu unapred, a potom upišu u globalnu memoriju grafičke kartice. Ovaj način je brzo odbačen, jer se pokazao kao izuzetno neefikasan: zahteva jako puno memorije, usled čega ne mogu da se upišu drugi bitniji podaci simulacije.
 
