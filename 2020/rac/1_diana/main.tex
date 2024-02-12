@@ -71,7 +71,7 @@ Red opsluživanja sa kog se pokreću procesi nije izdeljen na nizove kao u O(1) 
 
 Za prvu predloženu modifikaciju je potrebno uvesti pojmove heš funkcije i heš tabele, kao i korišćen algoritam za dobijanje heš vrednosti.
 
-Heš funkcija je funkcija koja dati niz karaktera proizvoljne dužine mapira na niz karaktera fiksne duzine. To su jednosmerne funkcije, što znači da se iz dobijene vrednosti ne može dobiti originalna vrednost, a da se ne isproba svaka moguća kombinacija. (Cormen et al. 2015: 262).
+Heš funkcija je funkcija koja dati niz karaktera proizvoljne dužine mapira na niz karaktera fiksne duzine. To su jednosmerne funkcije, što znači da se iz dobijene vrednosti ne može dobiti originalna vrednost, a da se ne isproba svaka moguća kombinacija (Cormen et al. 2015: 262).
 
 Heš tabela omogućava brz pristup podacima. Podaci su sortirani u niz i svaki podatak poseduje svoj ključ. Ključ se dobija kao ostatak pri deljenju vrednosti heš funkcije koju taj podatak poseduje i broja elemenata niza. U slučaju da dva podatka dobiju istu vrednost ključa, dolazi do kolizije koju je moguće rešiti na raličite načine, ali ovi slučajevi nisu razmatrani u modifikacijama.
 
